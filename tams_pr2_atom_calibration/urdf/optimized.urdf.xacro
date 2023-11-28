@@ -1534,18 +1534,24 @@
     </visual>
   </link>
   <joint name="azure_kinect_camera_base_to_rgb_sensor_joint" type="fixed">
-    <origin xyz="-0.01792 -0.032 0.0" rpy="0.0 0.0 0.0"/>
+    <origin xyz="-0.006087549382002858 -0.029180110849404146 0.002963802698343846" rpy="-0.011639277151118984 -0.023149641698049925 -0.003980766965896363"/>
     <parent link="azure_kinect_camera_base"/>
     <child link="azure_kinect_rgb_sensor"/>
   </joint>
-  <link name="azure_kinect_rgb_camera_link_urdf"/>
+  <link name="azure_kinect_rgb_camera_link"/>
   <joint name="azure_kinect_rgb_sensor_to_rgb_camera_joint" type="fixed">
     <origin xyz="0.01411221072129154 -5.274945064383946e-05 -0.00025686822127624076" rpy="-1.576436 0.0016804 -1.5680018"/>
     <parent link="azure_kinect_rgb_sensor"/>
-    <child link="azure_kinect_rgb_camera_link_urdf"/>
+    <child link="azure_kinect_rgb_camera_link"/>
+  </joint>
+  <link name="azure_kinect_depth_camera_link"/>
+  <joint name="azure_kinect_depth_sensor_to_depth_camera_joint" type="fixed">
+    <origin xyz="0.01411221072129154 -5.274945064383946e-05 -0.00025686822127624076" rpy="-1.576436 0.0016804 -1.5680018"/>
+    <parent link="azure_kinect_depth_sensor"/>
+    <child link="azure_kinect_depth_camera_link"/>
   </joint>
   <joint name="azure_kinect_camera_base_joint" type="fixed">
-    <origin xyz="0.05326841953691841 0.006597606436255618 0.17424594407306315" rpy="0.007285055140918984 0.08145909946609553 0.02776856447767072"/>
+    <origin xyz="0.048 0.0 0.171" rpy="0.0 0.0 0.0"/>
     <parent link="head_plate_frame"/>
     <child link="azure_kinect_camera_base"/>
   </joint>
