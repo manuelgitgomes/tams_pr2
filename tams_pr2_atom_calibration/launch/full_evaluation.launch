@@ -33,6 +33,96 @@
 
     <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
     <!-- Evaluation -->
+    <node type="depth_to_rgb_evaluation" pkg="atom_evaluation" 
+        name="azure_depth_camera_to_azure_rgb_camera_evaluation"
+        args="-cs azure_rgb_camera -ds azure_depth_camera  -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+        output="screen"/>
+
+    <node type="inter_collection_depth_to_rgb_evaluation" pkg="atom_evaluation" 
+        name="inter_collection_azure_depth_camera_to_azure_rgb_camera_evaluation"
+        args="-cs azure_rgb_camera -ds azure_depth_camera  -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+        output="screen"/>
+
+    <node type="rgb_to_rgb_evaluation" pkg="atom_evaluation" 
+        name="azure_rgb_camera_to_narrow_left_camera_evaluation"
+        args="-ss azure_rgb_camera -st narrow_left_camera -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+        output="screen"/>
+
+    <node type="inter_collection_rgb_to_rgb_evaluation" pkg="atom_evaluation" 
+        name="inter_collection_azure_rgb_camera_to_narrow_left_camera_evaluation"
+        args="-ss azure_rgb_camera -st narrow_left_camera -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+        output="screen"/>
+
+    <node type="rgb_to_rgb_evaluation" pkg="atom_evaluation" 
+        name="azure_rgb_camera_to_narrow_right_camera_evaluation"
+        args="-ss azure_rgb_camera -st narrow_right_camera -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+        output="screen"/>
+
+    <node type="inter_collection_rgb_to_rgb_evaluation" pkg="atom_evaluation" 
+        name="inter_collection_azure_rgb_camera_to_narrow_right_camera_evaluation"
+        args="-ss azure_rgb_camera -st narrow_right_camera -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+        output="screen"/>
+
+    <node type="rgb_to_rgb_evaluation" pkg="atom_evaluation" 
+        name="azure_rgb_camera_to_wide_left_camera_evaluation"
+        args="-ss azure_rgb_camera -st wide_left_camera -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+        output="screen"/>
+
+    <node type="inter_collection_rgb_to_rgb_evaluation" pkg="atom_evaluation" 
+        name="inter_collection_azure_rgb_camera_to_wide_left_camera_evaluation"
+        args="-ss azure_rgb_camera -st wide_left_camera -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+        output="screen"/>
+
+    <node type="rgb_to_rgb_evaluation" pkg="atom_evaluation" 
+        name="azure_rgb_camera_to_wide_right_camera_evaluation"
+        args="-ss azure_rgb_camera -st wide_right_camera -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+        output="screen"/>
+
+    <node type="inter_collection_rgb_to_rgb_evaluation" pkg="atom_evaluation" 
+        name="inter_collection_azure_rgb_camera_to_wide_right_camera_evaluation"
+        args="-ss azure_rgb_camera -st wide_right_camera -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+        output="screen"/>
+
+    <node type="depth_to_rgb_evaluation" pkg="atom_evaluation" 
+        name="azure_depth_camera_to_narrow_left_camera_evaluation"
+        args="-ds azure_depth_camera -cs narrow_left_camera  -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+        output="screen"/>
+
+    <node type="inter_collection_depth_to_rgb_evaluation" pkg="atom_evaluation" 
+        name="inter_collection_azure_depth_camera_to_narrow_left_camera_evaluation"
+        args="-ds azure_depth_camera -cs narrow_left_camera  -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+        output="screen"/>
+
+    <node type="depth_to_rgb_evaluation" pkg="atom_evaluation" 
+        name="azure_depth_camera_to_narrow_right_camera_evaluation"
+        args="-ds azure_depth_camera -cs narrow_right_camera  -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+        output="screen"/>
+
+    <node type="inter_collection_depth_to_rgb_evaluation" pkg="atom_evaluation" 
+        name="inter_collection_azure_depth_camera_to_narrow_right_camera_evaluation"
+        args="-ds azure_depth_camera -cs narrow_right_camera  -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+        output="screen"/>
+
+    <node type="depth_to_rgb_evaluation" pkg="atom_evaluation" 
+        name="azure_depth_camera_to_wide_left_camera_evaluation"
+        args="-ds azure_depth_camera -cs wide_left_camera  -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+        output="screen"/>
+
+    <node type="inter_collection_depth_to_rgb_evaluation" pkg="atom_evaluation" 
+        name="inter_collection_azure_depth_camera_to_wide_left_camera_evaluation"
+        args="-ds azure_depth_camera -cs wide_left_camera  -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+        output="screen"/>
+
+    <node type="depth_to_rgb_evaluation" pkg="atom_evaluation" 
+        name="azure_depth_camera_to_wide_right_camera_evaluation"
+        args="-ds azure_depth_camera -cs wide_right_camera  -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+        output="screen"/>
+
+    <node type="inter_collection_depth_to_rgb_evaluation" pkg="atom_evaluation" 
+        name="inter_collection_azure_depth_camera_to_wide_right_camera_evaluation"
+        args="-ds azure_depth_camera -cs wide_right_camera  -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+        output="screen"/>
+
     <node type="rgb_to_rgb_evaluation" pkg="atom_evaluation" 
         name="narrow_left_camera_to_narrow_right_camera_evaluation"
         args="-ss narrow_left_camera -st narrow_right_camera -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
@@ -64,26 +154,6 @@
         output="screen"/>
 
     <node type="rgb_to_rgb_evaluation" pkg="atom_evaluation" 
-        name="narrow_left_camera_to_azure_rgb_camera_evaluation"
-        args="-ss narrow_left_camera -st azure_rgb_camera -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
-        output="screen"/>
-
-    <node type="inter_collection_rgb_to_rgb_evaluation" pkg="atom_evaluation" 
-        name="inter_collection_narrow_left_camera_to_azure_rgb_camera_evaluation"
-        args="-ss narrow_left_camera -st azure_rgb_camera -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
-        output="screen"/>
-
-    <node type="depth_to_rgb_evaluation" pkg="atom_evaluation" 
-        name="azure_depth_camera_to_narrow_left_camera_evaluation"
-        args="-cs narrow_left_camera -ds azure_depth_camera  -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
-        output="screen"/>
-
-    <node type="inter_collection_depth_to_rgb_evaluation" pkg="atom_evaluation" 
-        name="inter_collection_azure_depth_camera_to_narrow_left_camera_evaluation"
-        args="-cs narrow_left_camera -ds azure_depth_camera  -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
-        output="screen"/>
-
-    <node type="rgb_to_rgb_evaluation" pkg="atom_evaluation" 
         name="narrow_right_camera_to_wide_left_camera_evaluation"
         args="-ss narrow_right_camera -st wide_left_camera -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
         output="screen"/>
@@ -104,26 +174,6 @@
         output="screen"/>
 
     <node type="rgb_to_rgb_evaluation" pkg="atom_evaluation" 
-        name="narrow_right_camera_to_azure_rgb_camera_evaluation"
-        args="-ss narrow_right_camera -st azure_rgb_camera -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
-        output="screen"/>
-
-    <node type="inter_collection_rgb_to_rgb_evaluation" pkg="atom_evaluation" 
-        name="inter_collection_narrow_right_camera_to_azure_rgb_camera_evaluation"
-        args="-ss narrow_right_camera -st azure_rgb_camera -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
-        output="screen"/>
-
-    <node type="depth_to_rgb_evaluation" pkg="atom_evaluation" 
-        name="azure_depth_camera_to_narrow_right_camera_evaluation"
-        args="-cs narrow_right_camera -ds azure_depth_camera  -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
-        output="screen"/>
-
-    <node type="inter_collection_depth_to_rgb_evaluation" pkg="atom_evaluation" 
-        name="inter_collection_azure_depth_camera_to_narrow_right_camera_evaluation"
-        args="-cs narrow_right_camera -ds azure_depth_camera  -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
-        output="screen"/>
-
-    <node type="rgb_to_rgb_evaluation" pkg="atom_evaluation" 
         name="wide_left_camera_to_wide_right_camera_evaluation"
         args="-ss wide_left_camera -st wide_right_camera -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
         output="screen"/>
@@ -133,54 +183,14 @@
         args="-ss wide_left_camera -st wide_right_camera -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
         output="screen"/>
 
-    <node type="rgb_to_rgb_evaluation" pkg="atom_evaluation" 
-        name="wide_left_camera_to_azure_rgb_camera_evaluation"
-        args="-ss wide_left_camera -st azure_rgb_camera -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
-        output="screen"/>
-
     <node type="inter_collection_rgb_to_rgb_evaluation" pkg="atom_evaluation" 
-        name="inter_collection_wide_left_camera_to_azure_rgb_camera_evaluation"
-        args="-ss wide_left_camera -st azure_rgb_camera -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+        name="inter_collection_azure_rgb_camera_to_azure_rgb_camera_evaluation"
+        args="-ss azure_rgb_camera -st azure_rgb_camera -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
         output="screen"/>
 
-    <node type="depth_to_rgb_evaluation" pkg="atom_evaluation" 
-        name="azure_depth_camera_to_wide_left_camera_evaluation"
-        args="-cs wide_left_camera -ds azure_depth_camera  -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
-        output="screen"/>
-
-    <node type="inter_collection_depth_to_rgb_evaluation" pkg="atom_evaluation" 
-        name="inter_collection_azure_depth_camera_to_wide_left_camera_evaluation"
-        args="-cs wide_left_camera -ds azure_depth_camera  -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
-        output="screen"/>
-
-    <node type="rgb_to_rgb_evaluation" pkg="atom_evaluation" 
-        name="wide_right_camera_to_azure_rgb_camera_evaluation"
-        args="-ss wide_right_camera -st azure_rgb_camera -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
-        output="screen"/>
-
-    <node type="inter_collection_rgb_to_rgb_evaluation" pkg="atom_evaluation" 
-        name="inter_collection_wide_right_camera_to_azure_rgb_camera_evaluation"
-        args="-ss wide_right_camera -st azure_rgb_camera -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
-        output="screen"/>
-
-    <node type="depth_to_rgb_evaluation" pkg="atom_evaluation" 
-        name="azure_depth_camera_to_wide_right_camera_evaluation"
-        args="-cs wide_right_camera -ds azure_depth_camera  -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
-        output="screen"/>
-
-    <node type="inter_collection_depth_to_rgb_evaluation" pkg="atom_evaluation" 
-        name="inter_collection_azure_depth_camera_to_wide_right_camera_evaluation"
-        args="-cs wide_right_camera -ds azure_depth_camera  -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
-        output="screen"/>
-
-    <node type="depth_to_rgb_evaluation" pkg="atom_evaluation" 
-        name="azure_depth_camera_to_azure_rgb_camera_evaluation"
-        args="-cs azure_rgb_camera -ds azure_depth_camera  -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
-        output="screen"/>
-
-    <node type="inter_collection_depth_to_rgb_evaluation" pkg="atom_evaluation" 
-        name="inter_collection_azure_depth_camera_to_azure_rgb_camera_evaluation"
-        args="-cs azure_rgb_camera -ds azure_depth_camera  -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
+    <node type="inter_collection_depth_to_depth_evaluation" pkg="atom_evaluation" 
+        name="inter_collection_azure_depth_camera_to_azure_depth_camera_evaluation"
+        args="-ss azure_depth_camera -st azure_depth_camera -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
         output="screen"/>
 
     <node type="inter_collection_rgb_to_rgb_evaluation" pkg="atom_evaluation" 
@@ -201,16 +211,6 @@
     <node type="inter_collection_rgb_to_rgb_evaluation" pkg="atom_evaluation" 
         name="inter_collection_wide_right_camera_to_wide_right_camera_evaluation"
         args="-ss wide_right_camera -st wide_right_camera -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
-        output="screen"/>
-
-    <node type="inter_collection_rgb_to_rgb_evaluation" pkg="atom_evaluation" 
-        name="inter_collection_azure_rgb_camera_to_azure_rgb_camera_evaluation"
-        args="-ss azure_rgb_camera -st azure_rgb_camera -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
-        output="screen"/>
-
-    <node type="inter_collection_depth_to_depth_evaluation" pkg="atom_evaluation" 
-        name="inter_collection_azure_depth_camera_to_azure_depth_camera_evaluation"
-        args="-ss azure_depth_camera -st azure_depth_camera -wf base_footprint -train_json $(arg train_json) -test_json $(arg test_json) -csf '$(arg csf)' -sfr" 
         output="screen"/>
 
     

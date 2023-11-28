@@ -35,9 +35,8 @@ package_name: "tams_pr2_atom_calibration"
 description_file: "package://tams_pr2_description/robots/tams_pr2.urdf.xacro"
 
 # The calibration framework requires a bagfile to extract the necessary data for the calibration.
+bag_file: "$ROS_BAGS/tams_pr2/train_2023-11-09-09-53-17.bag"
 # bag_file: "$ROS_BAGS/pr2/train_2023-11-16-08-49-46.bag"
-bag_file: "$ROS_BAGS/pr2/train_2023-11-09-09-53-17.bag"
-
 
 # You must define a frame of reference for the optimization process.
 # It must exist in the transformation chains of all the sensors which are being calibrated.
@@ -75,48 +74,48 @@ sensors:
   # you should not add the "compressed" part, use only:
   #   /world_camera/rgb/image_raw
   #
+  azure_rgb_camera:
+    link: "azure_kinect_rgb_camera_link"
+    parent_link: "azure_kinect_camera_base"
+    child_link: "azure_kinect_rgb_sensor"
+    topic_name: "/azure_kinect/rgb/image_raw"
+    modality: "rgb"
+
+  azure_depth_camera:
+    link: "azure_kinect_depth_camera_link"
+    parent_link: "azure_kinect_camera_base"
+    child_link: "azure_kinect_depth_sensor"
+    topic_name: "/azure_kinect/depth/image_raw"
+    modality: "depth"
 
   narrow_left_camera:
     link: "narrow_stereo_l_stereo_camera_optical_frame"
-    parent_link: "narrow_stereo_link"
-    child_link: "narrow_stereo_l_stereo_camera_frame"
+    parent_link: "narrow_stereo_l_stereo_camera_frame"
+    child_link: "narrow_stereo_l_stereo_camera_optical_frame"
     topic_name: "/narrow_stereo/left/image_rect"
     modality: "rgb"
 
   narrow_right_camera:
     link: "narrow_stereo_r_stereo_camera_optical_frame"
-    parent_link: "narrow_stereo_l_stereo_camera_frame"
-    child_link: "narrow_stereo_r_stereo_camera_frame"
+    parent_link: "narrow_stereo_r_stereo_camera_frame"
+    child_link: "narrow_stereo_r_stereo_camera_optical_frame"
     topic_name: "/narrow_stereo/right/image_rect"
     modality: "rgb"
 
   wide_left_camera:
     link: "wide_stereo_l_stereo_camera_optical_frame"
-    parent_link: "wide_stereo_link"
-    child_link: "wide_stereo_l_stereo_camera_frame"
+    parent_link: "wide_stereo_l_stereo_camera_frame"
+    child_link: "wide_stereo_l_stereo_camera_optical_frame"
     topic_name: "/wide_stereo/left/image_rect"
     modality: "rgb"
 
   wide_right_camera:
     link: "wide_stereo_r_stereo_camera_optical_frame"
-    parent_link: "wide_stereo_l_stereo_camera_frame"
-    child_link: "wide_stereo_r_stereo_camera_frame"
+    parent_link: "wide_stereo_r_stereo_camera_frame"
+    child_link: "wide_stereo_r_stereo_camera_optical_frame"
     topic_name: "/wide_stereo/right/image_rect"
     modality: "rgb"
 
-  azure_rgb_camera:
-    link: "azure_kinect_rgb_camera_link"
-    parent_link: "head_plate_frame"
-    child_link: "azure_kinect_camera_base"
-    topic_name: "/azure_kinect/rgb/image_raw"
-    modality: "rgb"
-
-  azure_depth_camera:
-    link: "azure_kinect_rgb_camera_link"
-    parent_link: "head_plate_frame"
-    child_link: "azure_kinect_camera_base"
-    topic_name: "/azure_kinect/depth/image_raw"
-    modality: "depth"
 
 # ATOM will calibrate the extrinsic parameters of your links.
 # In this section you should discriminate the additional transformations that will be part of the calibrations.
@@ -136,6 +135,45 @@ additional_tfs: ""
   #   parent_link: "base_footprint"
   #   child_link: "base_link"
 
+joints:
+  head_pan_joint:
+    parent_link: "torso_lift_link"
+    child_link: "head_pan_link"
+    params_to_calibrate: ['position_bias']
+  head_tilt_joint:
+    parent_link: "head_pan_link"
+    child_link: "head_tilt_link"
+    params_to_calibrate: ['position_bias']
+  l_shoulder_pan_joint:
+    parent_link: "torso_lift_link"
+    child_link: "l_shoulder_pan_link"
+    params_to_calibrate: ['position_bias']
+  l_shoulder_lift_joint:
+    parent_link: "l_shoulder_pan_link"
+    child_link: "l_shoulder_lift_link"
+    params_to_calibrate: ['position_bias']
+  l_upper_arm_roll_joint:
+    parent_link: "l_shoulder_lift_link"
+    child_link: "l_upper_arm_roll_link"
+    params_to_calibrate: ['position_bias']
+  l_elbow_flex_joint:
+    parent_link: "l_upper_arm_link"
+    child_link: "l_elbow_flex_link"
+    params_to_calibrate: ['position_bias']
+  l_forearm_roll_joint:
+    parent_link: "l_elbow_flex_link"
+    child_link: "l_forearm_roll_link"
+    params_to_calibrate: ['position_bias']
+  l_wrist_flex_joint:
+    parent_link: "l_forearm_link"
+    child_link: "l_wrist_flex_link"
+    params_to_calibrate: ['position_bias']
+  l_wrist_roll_joint:
+    parent_link: "l_wrist_flex_link"
+    child_link: "l_wrist_roll_link"
+    params_to_calibrate: ['position_bias']
+
+
 # The calibration requires a detectable pattern.
 # This section describes the properties of the calibration pattern used in th calibration.
 calibration_pattern:
@@ -147,7 +185,7 @@ calibration_pattern:
   # The parent frame id (or link) of the pattern.
   # For example, in hand-eye calibration the parent link
   # of the pattern can be the end-effector or the base of the arm
-  parent_link: "l_gripper_palm_link"
+  parent_link: "l_gripper_l_finger_tip_frame"
 
   # Defines if the pattern link is the same in all collections (i.e. fixed=true),
   # or each collection will have its own estimate of the link transformation.
