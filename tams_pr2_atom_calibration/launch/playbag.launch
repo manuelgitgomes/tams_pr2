@@ -22,7 +22,7 @@
     Sets up image decompressors if needed, reads the urdf robot description.
 
 @arg bag_file  Absolute path to the playing bag.
-    default: $(env ROS_BAGS)/pr2/train_2023-11-16-08-49-46.bag
+    default: $(env ROS_BAGS)/pr2/train_2023-11-09-09-53-17.bag
 @arg bag_start Playback starting time (in seconds). default: 0.0
 @arg bag_rate  Playback rate. default: 1.0
 @arg use_tfs  Use tfs in the bag file or generate new ones using the urdf, joint state messages and the robot state publisher. default: False
@@ -30,7 +30,7 @@
 
 <launch>
 
-    <arg name="bag_file" default="$(env ROS_BAGS)/pr2/train_2023-11-16-08-49-46.bag"/>
+    <arg name="bag_file" default="$(env ROS_BAGS)/pr2/train_2023-11-09-09-53-17.bag"/>
     <arg name="bag_start" default="0"/>
     <arg name="bag_rate" default="1"/>
     <arg name="optimized" default="false"/>
@@ -52,13 +52,17 @@
     <!-- Playback the bag file -->
     <param name="/use_sim_time" value="true"/>
 
-    <!-- Play bag file using tfs, ignore joint states, do not collect ground truth  -->
+    <!-- Generate transformatiosn from the xacro and joint state msgs, ignore tfs -->
     <node pkg="rosbag" type="play" name="rosbag_play" output="screen"
-              args=" $(arg bag_file) --clock -r $(arg bag_rate) -l -s $(arg bag_start) -d 2 /joint_states:=/joint_states_null "/>
+        args=" $(arg bag_file) --clock -r $(arg bag_rate) -l -s $(arg bag_start) -d 2 /tf:=/tf_dev_null /tf_static:=/tf_static_dev_null "/>
     <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
 
     <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
     <!-- Image Topic Decompression -->
+    <node pkg="image_transport" type="republish" name="decompressor_azure_rgb_camera" output="screen"
+          args="compressed in:=/azure_kinect/rgb/image_raw raw out:=/azure_kinect/rgb/image_raw"/>
+    <node pkg="image_transport" type="republish" name="decompressor_azure_depth_camera" output="screen"
+          args="compressed in:=/azure_kinect/depth/image_raw raw out:=/azure_kinect/depth/image_raw"/>
     <node pkg="image_transport" type="republish" name="decompressor_narrow_left_camera" output="screen"
           args="compressed in:=/narrow_stereo/left/image_rect raw out:=/narrow_stereo/left/image_rect"/>
     <node pkg="image_transport" type="republish" name="decompressor_narrow_right_camera" output="screen"
@@ -67,10 +71,6 @@
           args="compressed in:=/wide_stereo/left/image_rect raw out:=/wide_stereo/left/image_rect"/>
     <node pkg="image_transport" type="republish" name="decompressor_wide_right_camera" output="screen"
           args="compressed in:=/wide_stereo/right/image_rect raw out:=/wide_stereo/right/image_rect"/>
-    <node pkg="image_transport" type="republish" name="decompressor_azure_rgb_camera" output="screen"
-          args="compressed in:=/azure_kinect/rgb/image_raw raw out:=/azure_kinect/rgb/image_raw"/>
-    <node pkg="image_transport" type="republish" name="decompressor_azure_depth_camera" output="screen"
-          args="compressed in:=/azure_kinect/depth/image_raw raw out:=/azure_kinect/depth/image_raw"/>
     <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
     <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
     <!-- Visualization -->
