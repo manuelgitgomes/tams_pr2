@@ -35,8 +35,8 @@ package_name: "tams_pr2_atom_calibration"
 description_file: "package://tams_pr2_description/robots/tams_pr2.urdf.xacro"
 
 # The calibration framework requires a bagfile to extract the necessary data for the calibration.
-bag_file: "$ROS_BAGS/tams_pr2/train_2023-11-09-09-53-17.bag" 
-# bag_file: "$ROS_BAGS/pr2/train_2023-11-16-08-49-46.bag" 
+bag_file: "$ROS_BAGS/tams_pr2/train_2023-11-09-09-53-17.bag"
+# bag_file: "$ROS_BAGS/pr2/train_2023-11-16-08-49-46.bag"
 
 # You must define a frame of reference for the optimization process.
 # It must exist in the transformation chains of all the sensors which are being calibrated.
@@ -77,13 +77,13 @@ sensors:
   azure_rgb_camera:
     link: "azure_kinect_rgb_camera_link"
     parent_link: "azure_kinect_camera_base"
-    child_link: "azure_kinect_rgb_sensor" 
+    child_link: "azure_kinect_rgb_sensor"
     topic_name: "/azure_kinect/rgb/image_raw"
     modality: "rgb"
 
   azure_depth_camera:
     link: "azure_kinect_depth_camera_link"
-    parent_link: "azure_kinect_camera_base" 
+    parent_link: "azure_kinect_camera_base"
     child_link: "azure_kinect_depth_sensor"
     topic_name: "/azure_kinect/depth/image_raw"
     modality: "depth"
@@ -189,7 +189,7 @@ calibration_pattern:
 
   # Defines if the pattern link is the same in all collections (i.e. fixed=true),
   # or each collection will have its own estimate of the link transformation.
-  # Note: if you plan to have the pattern fixed, while the moving the rigidly attached sensors, 
+  # Note: if you plan to have the pattern fixed, while the moving the rigidly attached sensors,
   # this is equivalent to having the sensors fixed and the pattern moving, so you should use fixed=false.
   fixed: true
 
