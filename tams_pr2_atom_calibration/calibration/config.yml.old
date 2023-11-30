@@ -10,12 +10,12 @@
 #  | | | | | (_| | | | | | |  __/\ V  V / (_) | |  |   <
 #  |_| |_|  \__,_|_| |_| |_|\___| \_/\_/ \___/|_|  |_|\_\
 #  https://github.com/lardemua/atom
-# Auto-generated file on 30/11/2023 14:50:45
 
 # This yaml file describes your calibration!
 
-
-# Start by defining your robotic system.
+# This parameter is automatically filled by ATOM, please only change if you know what you are doing
+package_name: "tams_pr2_atom_calibration"
+# You can start by defining your robotic system.
 # This is the URDF file (or xacro) that describes your robot.
 # Every time a path to a file is requested you can use
 #
@@ -36,6 +36,7 @@ description_file: "package://tams_pr2_description/robots/tams_pr2.urdf.xacro"
 
 # The calibration framework requires a bagfile to extract the necessary data for the calibration.
 bag_file: "$ROS_BAGS/tams_pr2/train_2023-11-09-09-53-17.bag"
+# bag_file: "$ROS_BAGS/pr2/train_2023-11-16-08-49-46.bag"
 
 # You must define a frame of reference for the optimization process.
 # It must exist in the transformation chains of all the sensors which are being calibrated.
@@ -72,59 +73,54 @@ sensors:
   #   /world_camera/rgb/image_raw/compressed
   # you should not add the "compressed" part, use only:
   #   /world_camera/rgb/image_raw
-  
+  #
   azure_rgb_camera:
     link: "azure_kinect_rgb_camera_link"
     parent_link: "azure_kinect_camera_base"
     child_link: "azure_kinect_rgb_sensor"
     topic_name: "/azure_kinect/rgb/image_raw"
     modality: "rgb"
-    throttle:
-  
+
   azure_depth_camera:
     link: "azure_kinect_depth_camera_link"
     parent_link: "azure_kinect_camera_base"
     child_link: "azure_kinect_depth_sensor"
     topic_name: "/azure_kinect/depth/image_raw"
     modality: "depth"
-    throttle:
-  
+
   narrow_left_camera:
     link: "narrow_stereo_l_stereo_camera_optical_frame"
     parent_link: "narrow_stereo_l_stereo_camera_frame"
     child_link: "narrow_stereo_l_stereo_camera_optical_frame"
     topic_name: "/narrow_stereo/left/image_rect"
     modality: "rgb"
-    throttle:
-  
+
   narrow_right_camera:
     link: "narrow_stereo_r_stereo_camera_optical_frame"
     parent_link: "narrow_stereo_r_stereo_camera_frame"
     child_link: "narrow_stereo_r_stereo_camera_optical_frame"
     topic_name: "/narrow_stereo/right/image_rect"
     modality: "rgb"
-    throttle:
-  
+
   wide_left_camera:
     link: "wide_stereo_l_stereo_camera_optical_frame"
     parent_link: "wide_stereo_l_stereo_camera_frame"
     child_link: "wide_stereo_l_stereo_camera_optical_frame"
     topic_name: "/wide_stereo/left/image_rect"
     modality: "rgb"
-    throttle:
-  
+
   wide_right_camera:
     link: "wide_stereo_r_stereo_camera_optical_frame"
     parent_link: "wide_stereo_r_stereo_camera_frame"
     child_link: "wide_stereo_r_stereo_camera_optical_frame"
     topic_name: "/wide_stereo/right/image_rect"
     modality: "rgb"
-    throttle:
-  
+
 
 # ATOM will calibrate the extrinsic parameters of your links.
 # In this section you should discriminate the additional transformations that will be part of the calibrations.
-additional_tfs:
+# NOTE: Delete the "" after additional_tfs to prevent the error 'All mapping items must start at the same column YAML'
+additional_tfs: ""
   # Each key will define a transformations and its name, which will be use throughout the calibration.
   # Each additional transformations definition must have the following properties:
   #
@@ -135,82 +131,108 @@ additional_tfs:
   #           This is the transformation (i.e. link) that we be optimized.
   #
   # EXAMPLE:
-  #base_footprint_to_base_link:
-  #  parent_link: "base_footprint"
-  #  child_link: "base_link"
+  # base_footprint_to_base_link:
+  #   parent_link: "base_footprint"
+  #   child_link: "base_link"
 
-
-# ATOM can also calibrate several parameters of your joints.
-# In this section you should discriminate the joints that will be part of the calibrations.
-# For each joint you must specify which parameters to optimize.
-# The joint is identified by its name, consistent with the URDF description.
 joints:
-  # Each key will define a joint and its name, which will be use throughout the calibration.
-  # Each joint definition must have the following properties:
-  #
-  #       params_to_calibrate:
-  #           This is the list of parameters that will be optimized, from the urdf definition (http://wiki.ros.org/urdf/XML/joint):
-  #           ['origin_x', 'origin_y', 'origin_z', 'origin_roll', 'origin_pitch', 'origin_yaw', 'position_bias']
-  #
-  # EXAMPLE:
-  #head_pan_joint:
-  #  params_to_calibrate: ['position_bias']
   head_pan_joint:
+    parent_link: "torso_lift_link"
+    child_link: "head_pan_link"
     params_to_calibrate: ['position_bias']
-  
   head_tilt_joint:
+    parent_link: "head_pan_link"
+    child_link: "head_tilt_link"
     params_to_calibrate: ['position_bias']
-  
   l_shoulder_pan_joint:
+    parent_link: "torso_lift_link"
+    child_link: "l_shoulder_pan_link"
     params_to_calibrate: ['position_bias']
-  
   l_shoulder_lift_joint:
+    parent_link: "l_shoulder_pan_link"
+    child_link: "l_shoulder_lift_link"
     params_to_calibrate: ['position_bias']
-  
   l_upper_arm_roll_joint:
+    parent_link: "l_shoulder_lift_link"
+    child_link: "l_upper_arm_roll_link"
     params_to_calibrate: ['position_bias']
-  
   l_elbow_flex_joint:
+    parent_link: "l_upper_arm_link"
+    child_link: "l_elbow_flex_link"
     params_to_calibrate: ['position_bias']
-  
   l_forearm_roll_joint:
+    parent_link: "l_elbow_flex_link"
+    child_link: "l_forearm_roll_link"
     params_to_calibrate: ['position_bias']
-  
   l_wrist_flex_joint:
+    parent_link: "l_forearm_link"
+    child_link: "l_wrist_flex_link"
     params_to_calibrate: ['position_bias']
-  
   l_wrist_roll_joint:
+    parent_link: "l_wrist_flex_link"
+    child_link: "l_wrist_roll_link"
     params_to_calibrate: ['position_bias']
-  
-  
+
 
 # The calibration requires a detectable pattern.
-# This section describes the properties of the calibration pattern used in the calibration.
-calibration_patterns:
-  pattern_1:
-    link: "pattern_link"
-    parent_link: "l_gripper_l_finger_tip_frame"
-    fixed: True
-    pattern_type: "chessboard"
-    dictionary: ""
-    mesh_file: "package://atom_worlds/pattern/models/chessboard_200x214_5x4/chessboard_200x214_5x4.dae"
-    border_size: {'x': 0.03, 'y': 0.03}
-    dimension: {'x': 5, 'y': 4}
-    size: 0.025
-    inner_size: 0.015
+# This section describes the properties of the calibration pattern used in th calibration.
+calibration_pattern:
+
+  # The frame id (or link) of the pattern.
+  # This link/transformation will be optimized.
+  link: "pattern_link"
+
+  # The parent frame id (or link) of the pattern.
+  # For example, in hand-eye calibration the parent link
+  # of the pattern can be the end-effector or the base of the arm
+  parent_link: "l_gripper_l_finger_tip_frame"
+
+  # Defines if the pattern link is the same in all collections (i.e. fixed=true),
+  # or each collection will have its own estimate of the link transformation.
+  # Note: if you plan to have the pattern fixed, while the moving the rigidly attached sensors,
+  # this is equivalent to having the sensors fixed and the pattern moving, so you should use fixed=false.
+  fixed: true
+
+  # The type of pattern used for the calibration.
+  # Supported pattern are:
+  # - chessboard
+  # - charuco
+  pattern_type: "chessboard"
+
+  # If the pattern type is "charuco" you need to define
+  # the aruco dictionary used by the pattern.
+  # See https://docs.opencv.org/trunk/dc/df7/dictionary_8hpp.html
+  dictionary: ""
+
+  # Mesh file (collada.dae or stl) for showing pattern on rviz. URI or regular path.
+  # See: description_file
+  mesh_file: "package://atom_worlds/pattern/models/chessboard_200x214_5x4/chessboard_200x214_5x4.dae"
+
+  # The border width from the edge corner to the pattern physical edge.
+  # Used for 3D sensors and lidars.
+  # It can be a scalar (same border in x and y directions), or it can be {'x': ..., 'y': ,,,}
+  border_size: { 'x': 0.03, 'y': 0.03 }
+
+  # The number of corners the pattern has in the X and Y dimensions.
+  # Note: The charuco detector uses the number of squares per dimension in its detector.
+  # Internally we add a +1 to Y and X dimensions to account for that.
+  # Therefore, the number of corners should be used even for the charuco pattern.
+  dimension: { "x": 5, "y": 4 }
+
+  # The length of the square edge.
+  size: 0.025
+
+  # The length of the charuco inner marker.
+  inner_size: 0.015
+
 
 # Miscellaneous configuration
 
 # If your calibration problem is not fully constrained you should anchored one of the sensors.
 # This makes it immovable during the optimization.
 # This is typically referred to as gauge freedom.
-anchored_sensor:
+anchored_sensor: ""
 
 # Max time delta (in milliseconds) between sensor data messages when creating a collection.
 max_duration_between_msgs: 1000
 
-# This parameter is automatically filled by ATOM, please only change if you know what you are doing
-package_name: "tams_pr2_atom_calibration"
-
-# Automatically filled. Do not touch unless you know what you are doing.
-version: 2.0
