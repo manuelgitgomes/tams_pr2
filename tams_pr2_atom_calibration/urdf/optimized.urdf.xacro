@@ -917,7 +917,7 @@
     <limit effort="2.645" lower="-3.007" upper="3.007" velocity="6.0"/>
     <dynamics damping="0.5"/>
     <safety_controller k_velocity="1.5" k_position="100.0" soft_lower_limit="-2.857" soft_upper_limit="2.857"/>
-    <calibration rising="0.0303234" falling="0"/>
+    <calibration rising="0.01531154062790617" falling="0"/>
   </joint>
   <link name="head_pan_link">
     <inertial>
@@ -955,7 +955,7 @@
     <limit effort="18.0" lower="-0.471238" upper="1.39626" velocity="5.0"/>
     <dynamics damping="10.0"/>
     <safety_controller k_velocity="3.0" k_position="100.0" soft_lower_limit="-0.3712" soft_upper_limit="1.29626"/>
-    <calibration rising="0" falling="0.0110223"/>
+    <calibration rising="0" falling="-8.577235131254635e-05"/>
   </joint>
   <link name="head_tilt_link">
     <inertial>
@@ -1534,7 +1534,7 @@
     </visual>
   </link>
   <joint name="azure_kinect_camera_base_to_rgb_sensor_joint" type="fixed">
-    <origin xyz="-0.006087549382002858 -0.029180110849404146 0.002963802698343846" rpy="-0.011639277151118984 -0.023149641698049925 -0.003980766965896363"/>
+    <origin xyz="-0.01792 -0.032 0.0" rpy="0.0 0.0 0.0"/>
     <parent link="azure_kinect_camera_base"/>
     <child link="azure_kinect_rgb_sensor"/>
   </joint>
@@ -1551,7 +1551,7 @@
     <child link="azure_kinect_depth_camera_link"/>
   </joint>
   <joint name="azure_kinect_camera_base_joint" type="fixed">
-    <origin xyz="0.048 0.0 0.171" rpy="0.0 0.0 0.0"/>
+    <origin xyz="0.05156534529647598 0.002670728318304638 0.1777151884004853" rpy="-0.00808453173647982 -0.014528287360892594 -0.0014224511549819012"/>
     <parent link="head_plate_frame"/>
     <child link="azure_kinect_camera_base"/>
   </joint>
@@ -3583,7 +3583,7 @@
     <limit effort="30.0" lower="-0.7146018366025517" upper="2.2853981633974483" velocity="2.088"/>
     <dynamics damping="10.0"/>
     <safety_controller k_velocity="10.0" k_position="100.0" soft_lower_limit="-0.5646018366025517" soft_upper_limit="2.1353981633974484"/>
-    <calibration rising="0.82713499" falling="0"/>
+    <calibration rising="0.8134834214597091" falling="0"/>
   </joint>
   <link name="l_shoulder_pan_link">
     <inertial>
@@ -3613,7 +3613,7 @@
     <limit effort="30.0" lower="-0.5236" upper="1.3963" velocity="2.082"/>
     <dynamics damping="10.0"/>
     <safety_controller k_velocity="10.0" k_position="100.0" soft_lower_limit="-0.3535999999999999" soft_upper_limit="1.2963"/>
-    <calibration rising="0" falling="0.029331549999999998"/>
+    <calibration rising="0" falling="-0.003869385516868981"/>
   </joint>
   <link name="l_shoulder_lift_link">
     <inertial>
@@ -3643,7 +3643,7 @@
     <limit effort="30.0" lower="-0.8" upper="3.9000000000000004" velocity="3.27"/>
     <dynamics damping="0.1"/>
     <safety_controller k_velocity="2.0" k_position="100.0" soft_lower_limit="-0.65" soft_upper_limit="3.7500000000000004"/>
-    <calibration rising="1.6001292999999999" falling="0"/>
+    <calibration rising="1.593225178979538" falling="0"/>
   </joint>
   <link name="l_upper_arm_roll_link">
     <inertial>
@@ -3751,7 +3751,7 @@
     <limit effort="30.0" lower="0" upper="0" velocity="3.5999999999999996"/>
     <dynamics damping="0.1"/>
     <safety_controller k_velocity="1.0" k_position="0" soft_lower_limit="0" soft_upper_limit="0"/>
-    <calibration rising="0.063877" falling="0"/>
+    <calibration rising="0.014317360556922419" falling="0"/>
   </joint>
   <link name="l_forearm_roll_link">
     <inertial>
@@ -3797,7 +3797,7 @@
     <limit effort="30.0" lower="-2.3213" upper="0.0" velocity="3.3"/>
     <dynamics damping="1.0"/>
     <safety_controller k_velocity="3.0" k_position="100.0" soft_lower_limit="-2.1212999999999997" soft_upper_limit="-0.15"/>
-    <calibration rising="0" falling="-1.3127588"/>
+    <calibration rising="0" falling="-1.3069393634533952"/>
   </joint>
   <link name="l_elbow_flex_link">
     <inertial>
@@ -3868,7 +3868,7 @@
     <limit effort="10.0" lower="-2.18" upper="0.0" velocity="3.078"/>
     <dynamics damping="0.1"/>
     <safety_controller k_velocity="4.0" k_position="20.0" soft_lower_limit="-2.0" soft_upper_limit="-0.1"/>
-    <calibration rising="0" falling="-0.5442714999999999"/>
+    <calibration rising="0" falling="-0.5284454525275436"/>
   </joint>
   <link name="l_wrist_flex_link">
     <inertial>
@@ -3898,7 +3898,7 @@
     <limit effort="10.0" lower="0" upper="0" velocity="3.5999999999999996"/>
     <dynamics damping="0.1"/>
     <safety_controller k_velocity="2.0" k_position="0" soft_lower_limit="0" soft_upper_limit="0"/>
-    <calibration rising="-1.49252392" falling="0"/>
+    <calibration rising="-1.4549082745368125" falling="0"/>
   </joint>
   <link name="l_wrist_roll_link">
     <inertial>
