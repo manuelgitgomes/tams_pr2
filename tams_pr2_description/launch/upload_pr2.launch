@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <launch>
-  <param name="robot_description" command="xacro '$(find tams_pr2_description)/robots/tams_pr2.urdf.xacro'" />
+  <param name="robot_description" command="cat '$(find tams_pr2_atom_calibration)/urdf/optimized.urdf.xacro'" />
 </launch>
