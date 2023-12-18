@@ -10,13 +10,13 @@ r_elbow_flex_calib_ref: -1.15635323
 r_forearm_roll_calib_ref: 0.0015972
 
 ## left arm
-l_shoulder_pan_calib_ref: 0.82713499
-l_shoulder_lift_calib_ref: 0.029331549999999998
-l_upper_arm_roll_calib_ref: 1.6001292999999999
-l_elbow_flex_calib_ref: -1.3127588
-l_forearm_roll_calib_ref: 0.063877
-l_wrist_flex_calib_ref: -0.5442714999999999
-l_wrist_roll_calib_ref: -1.49252392
+l_shoulder_pan_calib_ref: 0.82922099
+l_shoulder_lift_calib_ref: 0.00735955
+l_upper_arm_roll_calib_ref: 1.6052983
+l_elbow_flex_calib_ref: -1.3054428
+l_forearm_roll_calib_ref: 0.009442
+l_wrist_flex_calib_ref: -0.5260045
+l_wrist_roll_calib_ref: -1.53524592
 
 ## head joints
 head_pan_calib_ref: 0.0303234
@@ -29,10 +29,10 @@ laser_calib_ref: 0.0
 torso_calib_ref: 0.00475
 
 ## azure offset
-azure_kinect_camera_base_pos_x: 0.0
-azure_kinect_camera_base_pos_y: 0.0
-azure_kinect_camera_base_pos_z: 0.0
+azure_kinect_camera_base_pos_x: 0.003692
+azure_kinect_camera_base_pos_y: -0.003571
+azure_kinect_camera_base_pos_z: 0.006248
 
-azure_kinect_camera_base_rot_r: 0.0
-azure_kinect_camera_base_rot_p: 0.0
-azure_kinect_camera_base_rot_y: 0.0
+azure_kinect_camera_base_rot_r: 0.003701
+azure_kinect_camera_base_rot_p: -0.025780
+azure_kinect_camera_base_rot_y: -0.001452
