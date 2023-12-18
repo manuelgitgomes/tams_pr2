@@ -35,12 +35,7 @@
 description_file: "package://tams_pr2_description/robots/tams_pr2.urdf.xacro"
 
 # The calibration framework requires a bagfile to extract the necessary data for the calibration.
-<<<<<<< HEAD
-bag_file: "$ROS_BAGS/tams_pr2/train_2023-11-09-09-53-17.bag" 
-# bag_file: "$ROS_BAGS/pr2/train_2023-11-16-08-49-46.bag" 
-=======
 bag_file: "$ROS_BAGS/tams_pr2/train_2023-11-09-09-53-17.bag"
->>>>>>> 8fd1bd6 (New config version)
 
 # You must define a frame of reference for the optimization process.
 # It must exist in the transformation chains of all the sensors which are being calibrated.
@@ -77,14 +72,14 @@ sensors:
   azure_rgb_camera:
     link: "azure_kinect_rgb_camera_link"
     parent_link: "azure_kinect_camera_base"
-    child_link: "azure_kinect_rgb_sensor" 
+    child_link: "azure_kinect_rgb_sensor"
     topic_name: "/azure_kinect/rgb/image_raw"
     modality: "rgb"
     throttle:
   
   azure_depth_camera:
     link: "azure_kinect_depth_camera_link"
-    parent_link: "azure_kinect_camera_base" 
+    parent_link: "azure_kinect_camera_base"
     child_link: "azure_kinect_depth_sensor"
     topic_name: "/azure_kinect/depth/image_raw"
     modality: "depth"
