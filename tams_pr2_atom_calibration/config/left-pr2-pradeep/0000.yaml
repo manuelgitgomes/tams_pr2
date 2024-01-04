@@ -1,0 +1,15 @@
+joint_commands:
+- controller: head_traj_controller
+  segments:
+  - duration: 2.0
+    positions: [0.12723450247038656, 0.18137461586725076]
+- controller: l_arm_controller
+  segments:
+  - duration: 2.0
+    positions: [0.036585595428704487, 0.20142051191170665, 0.4624237669213464, -0.74250218552437175,
+      -0.41054077608812539, -1.0664423912426462, -4.6819917841317036]
+- controller: r_arm_controller
+  segments:
+  - duration: 2.0
+    positions: [-1.7491875901719594, -0.13332159881262076, -0.0084592534681983324,
+      -1.561325329109605, 0.41279681247919975]
