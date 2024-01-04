@@ -41,7 +41,7 @@ def main():
     with open(output_file, 'r') as file:
         dict_yml = yaml.safe_load(file)
 
-    # Cycle all sensors in calibration config, and for each replace the optimized transform in the original xacro
+    # Cycle all sensors in calibration config, and only affect azure_rgb_camera
     found = False
     for sensor_key, sensor in dataset["calibration_config"]['sensors'].items():
         if sensor_key != 'azure_rgb_camera':
@@ -75,37 +75,39 @@ def main():
                             '. Cannot produce yaml file with calibration results.')
 
 
-    # Cycle all joints in calibration config, and for each replace the optimized transform in the original xacro
-    # Parse xacro description file
+    # Cycle all calibrated joints
     if dataset['calibration_config']['joints'] is not None:
         for config_joint_key, config_joint in dataset["calibration_config"]['joints'].items():
-
-            # Search for corresponding transform. Since this is a sensor transformation it must be static, which is why we use only one collection, the selected collection key
             found = False
-            for joint_key, joint in dataset['collections'][selected_collection_key]['joints'].items():
-                joint_name = joint_key.replace('_joint','')
+            joint_name = config_joint_key.replace('_joint','')
+            if config_joint_key not in dataset['collections'][selected_collection_key]['joints'].keys():
+                raise ValueError("Could not find values for joint " + config_joint_key +
+                                '. Cannot produce yaml file with calibration results.')
 
-                if not config_joint_key == joint_key:
+            # Get original joint values from robot description
+            for joint_description in robot_description.joints:
+                if not joint_description.name == config_joint_key:
                     continue
 
-                for joint_description in robot_description.joints:
-                    if not joint_description.name == joint_key:
-                        continue
+                xyz_description = joint_description.origin.xyz
+                rpy_description = joint_description.origin.rpy
+                break
 
-                    xyz_description = joint_description.origin.xyz
-                    rpy_description = joint_description.origin.rpy
-                    break
-
-                for param_to_calibrate in config_joint['params_to_calibrate']:
-                    if param_to_calibrate != 'origin_yaw':
-                        continue
-                    calibrated_yaw = dataset['collections'][selected_collection_key]['joints'][joint_key][param_to_calibrate]
-                    dict_yml[joint_name + '_calib_ref'] += calibrated_yaw - rpy_description[2] 
-                    found = True
-                    break
+            # Get difference between original and calibrated and add the delta to the yaml file
+            for param_to_calibrate in config_joint['params_to_calibrate']:
+                if param_to_calibrate == 'origin_roll':
+                    original_angle = rpy_description[0]
+                elif param_to_calibrate == 'origin_pitch':
+                    original_angle = rpy_description[1]
+                elif param_to_calibrate == 'origin_yaw':
+                    original_angle = rpy_description[2]
+                calibrated_angle = dataset['collections'][selected_collection_key]['joints'][config_joint_key][param_to_calibrate]
+                dict_yml[joint_name + '_calib_ref'] += calibrated_angle - original_angle 
+                found = True
+                break
 
             if not found:
-                raise ValueError("Could not find transform for joint " + joint_key +
+                raise ValueError("Could not find transform for joint " + config_joint_key +
                                 '. Cannot produce yaml file with calibration results.')
 
 
