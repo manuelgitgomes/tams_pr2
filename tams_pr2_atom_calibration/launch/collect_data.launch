@@ -25,7 +25,7 @@
 @arg marker_size   The size of the interaction marker that is used to trigger a data save.
 
 @arg bag_file  Absolute path to the playing bag.
-    default: $(env ROS_BAGS)/tams_pr2/train_2023-11-09-09-53-17.bag
+    default: $(env ROS_BAGS)/tams_pr2/train_2024-01-04-17-22-14.bag
 @arg bag_start Playback starting time (in seconds). default: 0.0
 @arg bag_rate  Playback rate. default: 1.0
 -->
@@ -43,7 +43,7 @@
     <arg name="rviz_file" default="$(find tams_pr2_atom_calibration)/rviz/collect_data.rviz"/>
     <arg name="description_file" default="$(find tams_pr2_atom_calibration)/urdf/initial_estimate.urdf.xacro"/>
     <!-- arguments to be passed onto playbag.launch  -->
-    <arg name="bag_file" default="$(env ROS_BAGS)/tams_pr2/train_2023-11-09-09-53-17.bag"/>
+    <arg name="bag_file" default="$(env ROS_BAGS)/tams_pr2/train_2024-01-04-17-22-14.bag"/>
     <arg name="bag_start" default="0"/>
     <arg name="bag_rate" default="1"/>
     <arg name="ssl" default="lambda sensor_name: False"/>
@@ -56,6 +56,7 @@
         <arg name="bag_file" value="$(arg bag_file)"/>
         <arg name="bag_start" value="$(arg bag_start)"/>
         <arg name="bag_rate" value="$(arg bag_rate)"/>
+        <arg name="description_file" default="$(arg description_file)"/>
     </include>
     <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
 
@@ -72,6 +73,47 @@
               args="-s $(arg marker_size) -o $(arg output_folder) -c $(arg config_file) -ssl '$(arg ssl)'" required="true"
               output="screen"/>
     </group>
+
+    <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
+    <!-- Labeler nodes -->
+    
+    <!-- Sensor azure_rgb_camera rgb_labeler -->
+    <node name="azure_rgb_camera_labeler" pkg="atom_calibration" type="rgb_labeler"
+        args="-cfg $(arg config_file) -sn azure_rgb_camera"
+        required="true"
+        output="screen"/>
+    
+    <!-- Sensor azure_depth_camera depth_labeler -->
+    <node name="azure_depth_camera_labeler" pkg="atom_calibration" type="depth_labeler"
+        args="-cfg $(arg config_file) -sn azure_depth_camera"
+        required="true"
+        output="screen"/>
+    
+    <!-- Sensor narrow_left_camera rgb_labeler -->
+    <node name="narrow_left_camera_labeler" pkg="atom_calibration" type="rgb_labeler"
+        args="-cfg $(arg config_file) -sn narrow_left_camera"
+        required="true"
+        output="screen"/>
+    
+    <!-- Sensor narrow_right_camera rgb_labeler -->
+    <node name="narrow_right_camera_labeler" pkg="atom_calibration" type="rgb_labeler"
+        args="-cfg $(arg config_file) -sn narrow_right_camera"
+        required="true"
+        output="screen"/>
+    
+    <!-- Sensor wide_left_camera rgb_labeler -->
+    <node name="wide_left_camera_labeler" pkg="atom_calibration" type="rgb_labeler"
+        args="-cfg $(arg config_file) -sn wide_left_camera"
+        required="true"
+        output="screen"/>
+    
+    <!-- Sensor wide_right_camera rgb_labeler -->
+    <node name="wide_right_camera_labeler" pkg="atom_calibration" type="rgb_labeler"
+        args="-cfg $(arg config_file) -sn wide_right_camera"
+        required="true"
+        output="screen"/>
+    
+
     <!-- %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
     <!-- Start automatic data collector node -->
     <node name="automatic_data_collector" pkg="atom_calibration" type="automatic_data_collector" output="screen"

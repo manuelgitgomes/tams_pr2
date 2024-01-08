@@ -35,7 +35,7 @@
 description_file: "package://tams_pr2_description/robots/tams_pr2.urdf.xacro"
 
 # The calibration framework requires a bagfile to extract the necessary data for the calibration.
-bag_file: "$ROS_BAGS/tams_pr2/train_2023-11-09-09-53-17.bag"
+bag_file: "$ROS_BAGS/tams_pr2/train_2024-01-04-17-22-14.bag"
 
 # You must define a frame of reference for the optimization process.
 # It must exist in the transformation chains of all the sensors which are being calibrated.
@@ -152,31 +152,31 @@ joints:
   #head_pan_joint:
   #  params_to_calibrate: ['position_bias']
   head_pan_joint:
-    params_to_calibrate: ['position_bias']
+    params_to_calibrate: ['origin_yaw']
   
   head_tilt_joint:
-    params_to_calibrate: ['position_bias']
+    params_to_calibrate: ['origin_pitch']
   
   l_shoulder_pan_joint:
-    params_to_calibrate: ['position_bias']
+    params_to_calibrate: ['origin_yaw']
   
   l_shoulder_lift_joint:
-    params_to_calibrate: ['position_bias']
+    params_to_calibrate: ['origin_pitch']
   
   l_upper_arm_roll_joint:
-    params_to_calibrate: ['position_bias']
+    params_to_calibrate: ['origin_roll']
   
   l_elbow_flex_joint:
-    params_to_calibrate: ['position_bias']
+    params_to_calibrate: ['origin_pitch']
   
   l_forearm_roll_joint:
-    params_to_calibrate: ['position_bias']
+    params_to_calibrate: ['origin_roll']
   
   l_wrist_flex_joint:
-    params_to_calibrate: ['position_bias']
+    params_to_calibrate: ['origin_pitch']
   
   l_wrist_roll_joint:
-    params_to_calibrate: ['position_bias']
+    params_to_calibrate: ['origin_roll']
   
   
 
