@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+
+import argparse
+import rospy
+from geometry_msgs.msg import PoseStamped
+
+# Class to handle the contact message publishing
+class ContactMessagePublisher:
+    def __init__(self, hand, timestamp_threshold = 2.0):
+        # Define state variables
+        self.hand = hand
+        self.timestamp_threshold = rospy.Duration(secs=timestamp_threshold)
+        self.contact_detected = False
+        self.last_timestamp = None
+
+        # Define the contact topic and create a publisher
+        self.contact_topic = '/atom/contact'
+        self.publisher = rospy.Publisher(self.contact_topic, PoseStamped, queue_size=10)
+
+        # If the specified hand is 'right', subscribe to the corresponding topic
+        if self.hand == 'right':
+            self.topic_to_analyse = '/hand/rh/contacts'
+            from tams_biotac.msg import ContactArray
+            self.message_type = ContactArray
+            self.subscriber = rospy.Subscriber(self.topic_to_analyse, self.message_type, self.tams_biotac_callback)
+        else:
+            raise ValueError(f'No hand named {self.hand} ')
+
+        # Print the topics being listened to and published
+        print('Listening to ' + self.topic_to_analyse)
+        print('Publishing to ' + self.contact_topic)
+    
+    def tams_biotac_callback(self, msg):
+        # Check if enough time has passed since the last callback
+        if self.last_timestamp is not None and msg.contacts[0].header.stamp - self.last_timestamp > self.timestamp_threshold:
+            self.contact_detected = False
+        self.last_timestamp = msg.contacts[0].header.stamp
+
+        if self.contact_detected:
+            return
+        # Convert the received message and publish the contact message
+        contact_message = self.convert_tams_biotac_msg_to_contact_msg(msg)
+        self.publisher.publish(contact_message)
+        self.contact_detected = True
+    
+    def convert_tams_biotac_msg_to_contact_msg(self, msg):
+        # Extract information from the received message and create a new PoseStamped message
+        single_msg = msg.contacts[0]
+        contact_message = PoseStamped()
+        contact_message.header.stamp = single_msg.header.stamp
+        contact_message.header.frame_id = single_msg.header.frame_id
+        contact_message.pose.position = single_msg.position
+        return contact_message
+
+# Main function to handle command line arguments and start the node
+def main():
+    # Parse command line arguments
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-ha", "--hand", help="Which hand to detect contact from [right]", type=str, required=True)
+    args = vars(ap.parse_known_args()[0])
+
+    # Initialize ROS node
+    rospy.init_node('contact_message_publisher')
+
+    # Create an instance of ContactMessagePublisher
+    contact_message_publisher = ContactMessagePublisher(args['hand'])
+
+    # Wait for callbacks
+    rospy.spin()
+
+if __name__ == '__main__':
+    main()
+
