@@ -1,30 +1,41 @@
 #!/usr/bin/env python3
 
 import argparse
+import numpy as np
 import rospy
 from geometry_msgs.msg import PoseStamped
+from tams_biotac.msg import ContactArray
+from pr2_msgs.msg import PressureState
+
 
 # Class to handle the contact message publishing
 class ContactMessagePublisher:
-    def __init__(self, hand, timestamp_threshold = 2.0):
+    def __init__(self, hand, timestamp_threshold=2.0, time_threshold=2, contact_threshold=10000):
         # Define state variables
         self.hand = hand
-        self.timestamp_threshold = rospy.Duration(secs=timestamp_threshold)
         self.contact_detected = False
+        self.timestamp_threshold = rospy.Duration(secs=timestamp_threshold)
         self.last_timestamp = None
-
-        # Define the contact topic and create a publisher
-        self.contact_topic = '/atom/contact'
-        self.publisher = rospy.Publisher(self.contact_topic, PoseStamped, queue_size=10)
+        self.time_threshold = rospy.Duration.from_sec(time_threshold)
+        self.contact_threshold = contact_threshold
+        self.msg_list = []
 
         # If the specified hand is 'right', subscribe to the corresponding topic
         if self.hand == 'right':
             self.topic_to_analyse = '/hand/rh/contacts'
-            from tams_biotac.msg import ContactArray
             self.message_type = ContactArray
             self.subscriber = rospy.Subscriber(self.topic_to_analyse, self.message_type, self.tams_biotac_callback)
+            self.contact_topic = '/atom/right_contact'
+        elif self.hand == 'left':
+            self.topic_to_analyse = '/pressure/l_gripper_motor'
+            self.message_type = PressureState
+            self.subscriber = rospy.Subscriber(self.topic_to_analyse, self.message_type, self.pressure_sensor_callback)
+            self.contact_topic = '/atom/left_contact'
         else:
-            raise ValueError(f'No hand named {self.hand} ')
+            raise ValueError(f'No hand named {self.hand}')
+
+        # Define the contact topic and create a publisher
+        self.publisher = rospy.Publisher(self.contact_topic, PoseStamped, queue_size=10)
 
         # Print the topics being listened to and published
         print('Listening to ' + self.topic_to_analyse)
@@ -51,6 +62,68 @@ class ContactMessagePublisher:
         contact_message.header.frame_id = single_msg.header.frame_id
         contact_message.pose.position = single_msg.position
         return contact_message
+
+    def pressure_sensor_callback(self, msg):
+        # Append the received message to the message list
+        self.msg_list.append(msg)
+
+        # Remove older messages based on the time threshold
+        while len(self.msg_list) > 1 and \
+            msg.header.stamp - self.msg_list[0].header.stamp > self.time_threshold:
+            self.msg_list.pop(0)
+
+        # If there are not enough messages, return
+        if len(self.msg_list) < 2:
+            return
+
+        # Store the previous contact detection status
+        self.prev_contact_detected = self.contact_detected
+
+        # Detect contact based on the current and previous messages
+        self.detect_contact()
+
+        # If contact is detected and it was not detected in the previous iteration, publish a contact message
+        if self.contact_detected and not self.prev_contact_detected:
+            contact_message = self.convert_pressure_msg_to_contact_msg(msg)
+            self.publisher.publish(contact_message)
+
+    def convert_pressure_msg_to_contact_msg(self, msg):
+        # Extract information from the received message and create a new PoseStamped message
+        contact_message = PoseStamped()
+        contact_message.header.stamp = msg.header.stamp
+        contact_message.header.frame_id = 'touch_probe_cylinder_top_frame'
+        return contact_message
+
+    def from_msg_list_to_pressure_and_time_arrays(self):
+        # Initialize lists to store pressure values and corresponding times
+        pressure_lists = [[], []]
+        time_list = []
+
+        # Extract pressure and time information from messages in the message list
+        for msg in self.msg_list:
+            pressure_lists[0].append(np.array((msg.l_finger_tip)))
+            pressure_lists[1].append(np.array((msg.r_finger_tip)))
+            time_list.append(msg.header.stamp.to_sec())
+
+        # Convert lists to NumPy arrays
+        pressure_arrays = np.array([np.array(pressure_list) for pressure_list in pressure_lists])
+        time_array = np.array(time_list)
+        return pressure_arrays, time_array
+
+    def detect_contact(self):
+        # Retrieve pressure and time arrays from the message list
+        pressure_arrays, time_array = self.from_msg_list_to_pressure_and_time_arrays()
+
+        # Calculate derivatives
+        pressure_diffs = np.diff(pressure_arrays, axis=1)
+        time_diffs = np.diff(time_array)
+        derivatives = pressure_diffs / time_diffs[:, np.newaxis]
+
+        # Check if any element in the derivative matrix exceeds the contact threshold
+        if not self.contact_detected:
+            self.contact_detected = np.any(derivatives > self.contact_threshold)
+        elif self.contact_detected:
+            self.contact_detected = not np.all(derivatives < self.contact_threshold)
 
 # Main function to handle command line arguments and start the node
 def main():
