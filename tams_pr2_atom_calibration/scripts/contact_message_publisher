@@ -10,7 +10,7 @@ from pr2_msgs.msg import PressureState
 
 # Class to handle the contact message publishing
 class ContactMessagePublisher:
-    def __init__(self, hand, timestamp_threshold=2.0, time_threshold=2, contact_threshold=10000):
+    def __init__(self, hand, timestamp_threshold=2.0, time_threshold=2, contact_threshold=5000):
         # Define state variables
         self.hand = hand
         self.contact_detected = False
@@ -53,6 +53,7 @@ class ContactMessagePublisher:
         contact_message = self.convert_tams_biotac_msg_to_contact_msg(msg)
         self.publisher.publish(contact_message)
         self.contact_detected = True
+        print('Contact detected!')
     
     def convert_tams_biotac_msg_to_contact_msg(self, msg):
         # Extract information from the received message and create a new PoseStamped message
@@ -85,6 +86,7 @@ class ContactMessagePublisher:
         # If contact is detected and it was not detected in the previous iteration, publish a contact message
         if self.contact_detected and not self.prev_contact_detected:
             contact_message = self.convert_pressure_msg_to_contact_msg(msg)
+            print('Contact detected!')
             self.publisher.publish(contact_message)
 
     def convert_pressure_msg_to_contact_msg(self, msg):
@@ -133,7 +135,7 @@ def main():
     args = vars(ap.parse_known_args()[0])
 
     # Initialize ROS node
-    rospy.init_node('contact_message_publisher')
+    rospy.init_node(f'contact_message_publisher_{args["hand"]}')
 
     # Create an instance of ContactMessagePublisher
     contact_message_publisher = ContactMessagePublisher(args['hand'])

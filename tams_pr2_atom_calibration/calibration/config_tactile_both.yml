@@ -72,7 +72,14 @@ sensors:
 contact_sensors:
   left_hand_sensor:
     contact_topic: "/atom/left_contact"
+    touching_link: "touch_probe_cylinder_top_frame"
+    touching_visual_link:
     touched_link: "closest"
+  right_hand_sensor:
+    contact_topic: "/atom/right_contact"
+    touching_link: 
+    touching_visual_link:
+    touched_link: "touch_probe_cylinder_top_frame"
   
 
 # ATOM will calibrate the extrinsic parameters of your links.
