@@ -1551,7 +1551,7 @@
     <child link="azure_kinect_depth_camera_link"/>
   </joint>
   <joint name="azure_kinect_camera_base_joint" type="fixed">
-    <origin xyz="0.04797663865993433 -0.008366640694689446 0.14526051134446816" rpy="0.03532604804076814 -0.06496716953483635 -0.05511706101973044"/>
+    <origin xyz="0.09443919908378173 0.010873822309647299 0.1675598749914739" rpy="-0.011229592652682889 -0.036835859973993135 -0.011355891320667735"/>
     <parent link="head_plate_frame"/>
     <child link="azure_kinect_camera_base"/>
   </joint>
@@ -4454,4 +4454,32 @@
     <turnGravityOff>true</turnGravityOff>
     <material>PR2/Blue</material>
   </gazebo>
+  <link name="pattern_link">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <visual name="pattern_1_visual">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://atom_worlds/pattern/models/chessboard_200x214_5x4/chessboard_200x214_5x4.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="l_gripper_l_finger_tip_frame-pattern_link" type="fixed">
+    <origin xyz="0.15544173487880106 0.024120168432036276 -0.06851292267149905" rpy="2.9029848739559867 -1.4294167587676068 -1.3284251864282028"/>
+    <parent link="l_gripper_l_finger_tip_frame"/>
+    <child link="pattern_link"/>
+  </joint>
+  <link name="pattern2_link">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <visual name="pattern_2_visual">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://atom_worlds/pattern/models/chessboard_200x214_5x4/chessboard_200x214_5x4.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="rh_forearm-pattern2_link" type="fixed">
+    <origin xyz="-0.036063374240731035 -0.0912910657130159 0.14121449293162777" rpy="-1.5658871902254503 -0.015205289031741136 0.15809811827942563"/>
+    <parent link="rh_forearm"/>
+    <child link="pattern2_link"/>
+  </joint>
 </robot>

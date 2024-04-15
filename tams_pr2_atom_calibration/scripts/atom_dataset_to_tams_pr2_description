@@ -43,36 +43,37 @@ def main():
 
     # Cycle all sensors in calibration config, and only affect azure_rgb_camera
     found = False
-    for sensor_key, sensor in dataset["calibration_config"]['sensors'].items():
-        if sensor_key != 'azure_rgb_camera':
-            continue
-
-        # Search for corresponding transform. Since this is a sensor transformation it must be static, which is why we use only one collection, the selected collection key
-        for transform_key, transform in dataset['collections'][selected_collection_key]['transforms'].items():
-
-            if not (sensor['parent_link'] == transform['parent'] and sensor['child_link'] == transform['child']):
+    if dataset["calibration_config"]['sensors']: 
+        for sensor_key, sensor in dataset["calibration_config"]['sensors'].items():
+            if sensor_key != 'azure_rgb_camera':
                 continue
 
-            # Find calibrated transform and compare with initial transform to get delta
-            trans = transform['trans']
-            quat = transform['quat']
-            rpy = tf.transformations.euler_from_quaternion(quat, axes='rxyz') 
+            # Search for corresponding transform. Since this is a sensor transformation it must be static, which is why we use only one collection, the selected collection key
+            for transform_key, transform in dataset['collections'][selected_collection_key]['transforms'].items():
 
-            original_trans = dataset['collections'][selected_collection_key]['transforms_ini'][transform_key]['trans'] 
-            original_quat = dataset['collections'][selected_collection_key]['transforms_ini'][transform_key]['quat'] 
-            original_rpy = tf.transformations.euler_from_quaternion(original_quat, axes='rxyz')
-    
-            dict_yml['azure_kinect_camera_base_pos_x'] += float(trans[0] - original_trans[0])
-            dict_yml['azure_kinect_camera_base_pos_y'] += float(trans[1] - original_trans[1])
-            dict_yml['azure_kinect_camera_base_pos_z'] += float(trans[2] - original_trans[2])
-            dict_yml['azure_kinect_camera_base_rot_r'] += float(rpy[0] - original_rpy[0])
-            dict_yml['azure_kinect_camera_base_rot_p'] += float(rpy[1] - original_rpy[1])
-            dict_yml['azure_kinect_camera_base_rot_y'] += float(rpy[2] - original_rpy[2])
-            found = True
-            break
-        if not found:
-            raise ValueError("Could not find transform for sensor " + sensor_key +
-                            '. Cannot produce yaml file with calibration results.')
+                if not (sensor['parent_link'] == transform['parent'] and sensor['child_link'] == transform['child']):
+                    continue
+
+                # Find calibrated transform and compare with initial transform to get delta
+                trans = transform['trans']
+                quat = transform['quat']
+                rpy = tf.transformations.euler_from_quaternion(quat, axes='rxyz') 
+
+                original_trans = dataset['collections'][selected_collection_key]['transforms_ini'][transform_key]['trans'] 
+                original_quat = dataset['collections'][selected_collection_key]['transforms_ini'][transform_key]['quat'] 
+                original_rpy = tf.transformations.euler_from_quaternion(original_quat, axes='rxyz')
+        
+                dict_yml['azure_kinect_camera_base_pos_x'] += float(trans[0] - original_trans[0])
+                dict_yml['azure_kinect_camera_base_pos_y'] += float(trans[1] - original_trans[1])
+                dict_yml['azure_kinect_camera_base_pos_z'] += float(trans[2] - original_trans[2])
+                dict_yml['azure_kinect_camera_base_rot_r'] += float(rpy[0] - original_rpy[0])
+                dict_yml['azure_kinect_camera_base_rot_p'] += float(rpy[1] - original_rpy[1])
+                dict_yml['azure_kinect_camera_base_rot_y'] += float(rpy[2] - original_rpy[2])
+                found = True
+                break
+            if not found:
+                raise ValueError("Could not find transform for sensor " + sensor_key +
+                                '. Cannot produce yaml file with calibration results.')
 
 
     # Cycle all calibrated joints
@@ -83,6 +84,9 @@ def main():
             if config_joint_key not in dataset['collections'][selected_collection_key]['joints'].keys():
                 raise ValueError("Could not find values for joint " + config_joint_key +
                                 '. Cannot produce yaml file with calibration results.')
+
+            if not (joint_name + '_calib_ref') in dict_yml:
+                continue
 
             # Get original joint values from robot description
             for joint_description in robot_description.joints:
@@ -102,6 +106,7 @@ def main():
                 elif param_to_calibrate == 'origin_yaw':
                     original_angle = rpy_description[2]
                 calibrated_angle = dataset['collections'][selected_collection_key]['joints'][config_joint_key][param_to_calibrate]
+
                 dict_yml[joint_name + '_calib_ref'] += calibrated_angle - original_angle 
                 found = True
                 break

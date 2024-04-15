@@ -140,6 +140,43 @@
     <origin xyz="0 0 0" rpy="0 1.5707963267948966 -1.2217304763960306" />
   </xacro:pr2_gripper_v0>
 
+  <!-- Add cyllinder for touch experiment -->
+  <xacro:property name="cylinder_radius" value="0.002" />
+  <xacro:property name="cylinder_length" value="0.02099" />
+
+  <joint name="touch_probe_cylinder_base_joint" type="fixed">
+    <origin xyz="0.019 0 0" rpy="0 0 0" />
+    <parent link="l_gripper_tool_frame"/>
+    <child link="touch_probe_cylinder_base_frame"/>
+  </joint>
+
+  <link name="touch_probe_cylinder_base_frame"/>
+
+  <joint name="touch_probe_cylinder_top_joint" type="fixed">
+    <origin xyz="${cylinder_length} 0 0" rpy="0 0 0" />
+    <parent link="touch_probe_cylinder_base_frame"/>
+    <child link="touch_probe_cylinder_top_frame"/>
+  </joint>
+
+  <link name="touch_probe_cylinder_top_frame">
+   <visual>
+     <origin xyz="${-cylinder_length/2} 0 0" rpy="0 ${-M_PI/2} 0" />
+     <geometry>
+       <cylinder radius="${cylinder_radius}" length="${cylinder_length}"/>
+     </geometry>
+     <material name="Grey">
+       <color rgba="0.5 0.5 0.5 1.0"/>
+     </material>
+   </visual>
+   <collision>
+     <origin xyz="${-cylinder_length/2} 0 0" rpy="0 ${-M_PI/2} 0" />
+     <geometry>
+       <cylinder radius="${cylinder_radius}" length="${cylinder_length}"/>
+     </geometry>
+   </collision>
+  </link>
+
+
   <!-- Forearm cam Position is a guess, based on full robot calibration -->
   <!-- Forearm cam Orientation is from Function -->
   <xacro:wge100_camera_v0 name="l_forearm_cam" image_format="R8G8B8" camera_name="l_forearm_cam" image_topic_name="image_raw"

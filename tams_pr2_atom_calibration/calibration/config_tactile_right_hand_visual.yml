@@ -35,7 +35,7 @@
 description_file: "package://tams_pr2_description/robots/tams_pr2.urdf.xacro"
 
 # The calibration framework requires a bagfile to extract the necessary data for the calibration.
-bag_file: "$ROS_BAGS/tams_pr2/tmp_2024-01-10-17-37-50.bag"
+bag_file: "$ROS_BAGS/tams_pr2/tmp_2024-02-10-18-03-51.bag"
 
 # You must define a frame of reference for the optimization process.
 # It must exist in the transformation chains of all the sensors which are being calibrated.
@@ -68,39 +68,62 @@ sensors:
   #   /world_camera/rgb/image_raw/compressed
   # you should not add the "compressed" part, use only:
   #   /world_camera/rgb/image_raw
+  
+  azure_rgb_camera:
+    link: "azure_kinect_rgb_camera_link"
+    parent_link: "azure_kinect_camera_base"
+    child_link: "azure_kinect_rgb_sensor"
+    topic_name: "/azure_kinect/rgb/image_raw"
+    modality: "rgb"
+    throttle:
+  
+  # azure_depth_camera:
+  #   link: "azure_kinect_depth_camera_link"
+  #   parent_link: "azure_kinect_camera_base"
+  #   child_link: "azure_kinect_depth_sensor"
+  #   topic_name: "/azure_kinect/depth/image_raw"
+  #   modality: "depth"
+  #   throttle:
+  
+  # narrow_left_camera:
+  #   link: "narrow_stereo_l_stereo_camera_optical_frame"
+  #   parent_link: "narrow_stereo_l_stereo_camera_frame"
+  #   child_link: "narrow_stereo_l_stereo_camera_optical_frame"
+  #   topic_name: "/narrow_stereo/left/image_rect"
+  #   modality: "rgb"
+  #   throttle:
+  
+  # narrow_right_camera:
+  #   link: "narrow_stereo_r_stereo_camera_optical_frame"
+  #   parent_link: "narrow_stereo_r_stereo_camera_frame"
+  #   child_link: "narrow_stereo_r_stereo_camera_optical_frame"
+  #   topic_name: "/narrow_stereo/right/image_rect"
+  #   modality: "rgb"
+  #   throttle:
+  
+  # wide_left_camera:
+  #   link: "wide_stereo_l_stereo_camera_optical_frame"
+  #   parent_link: "wide_stereo_l_stereo_camera_frame"
+  #   child_link: "wide_stereo_l_stereo_camera_optical_frame"
+  #   topic_name: "/wide_stereo/left/image_rect"
+  #   modality: "rgb"
+  #   throttle:
+  
+  # wide_right_camera:
+  #   link: "wide_stereo_r_stereo_camera_optical_frame"
+  #   parent_link: "wide_stereo_r_stereo_camera_frame"
+  #   child_link: "wide_stereo_r_stereo_camera_optical_frame"
+  #   topic_name: "/wide_stereo/right/image_rect"
+  #   modality: "rgb"
+  #   throttle:
 
 contact_sensors:
-  left_hand_sensor:
-    contact_topic: "/atom/left_contact"
-    touching_link: "touch_probe_cylinder_top_frame"
-    touched_link: "closest"
-    touching_visual_link:
-  right_hand_index_sensor:
+  right_hand_sensor:
     contact_topic: "/atom/right_contact"
+    touched_link: "closest"
     touching_link: "rh_ff_biotac_link"
     touching_visual_link: "rh_ffdistal"
-    touched_link: "touch_probe_cylinder_top_frame"
-  right_hand_middle_sensor:
-    contact_topic: "/atom/right_contact"
-    touching_link: "rh_mf_biotac_link"
-    touching_visual_link: "rh_mfdistal"
-    touched_link: "touch_probe_cylinder_top_frame"
-  right_hand_ring_sensor:
-    contact_topic: "/atom/right_contact"
-    touching_link: "rh_rf_biotac_link"
-    touching_visual_link: "rh_rfdistal"
-    touched_link: "touch_probe_cylinder_top_frame"
-  right_hand_little_sensor:
-    contact_topic: "/atom/right_contact"
-    touching_link: "rh_lf_biotac_link"
-    touching_visual_link: "rh_lfdistal"
-    touched_link: "touch_probe_cylinder_top_frame"
-  right_hand_thumb_sensor:
-    contact_topic: "/atom/right_contact"
-    touching_link: "rh_th_biotac_link"
-    touching_visual_link: "rh_thdistal"
-    touched_link: "touch_probe_cylinder_top_frame"
-  
+ 
 
 # ATOM will calibrate the extrinsic parameters of your links.
 # In this section you should discriminate the additional transformations that will be part of the calibrations.
@@ -177,23 +200,33 @@ joints:
   r_forearm_roll_joint:
     params_to_calibrate: ['origin_roll']
   
+  rh_FFJ4:
+    params_to_calibrate: ['origin_pitch']
+  
+  rh_MFJ4:
+    params_to_calibrate: ['origin_pitch']
+  
+  rh_RFJ4:
+    params_to_calibrate: ['origin_pitch']
+  
+  rh_LFJ4:
+    params_to_calibrate: ['origin_pitch']
   
 
 # The calibration requires a detectable pattern.
 # This section describes the properties of the calibration pattern used in the calibration.
 calibration_patterns:
-  # pattern_1:
-  #   link: "pattern_link"
-  #   parent_link: "l_gripper_l_finger_tip_frame"
-  #   fixed: True
-  #   pattern_type: "chessboard"
-  #   dictionary: ""
-  #   mesh_file: "package://atom_worlds/pattern/models/chessboard_200x214_5x4/chessboard_200x214_5x4.dae"
-  #   border_size: {'x': 0.03, 'y': 0.03}
-  #   dimension: {'x': 5, 'y': 4}
-  #   size: 0.025
-  #   inner_size: 0.015
-
+  pattern_1:
+    link: "pattern_link"
+    parent_link: "l_gripper_l_finger_tip_frame"
+    fixed: True
+    pattern_type: "chessboard"
+    dictionary: ""
+    mesh_file: "package://atom_worlds/pattern/models/chessboard_200x214_5x4/chessboard_200x214_5x4.dae"
+    border_size: {'x': 0.03, 'y': 0.03}
+    dimension: {'x': 5, 'y': 4}
+    size: 0.025
+    inner_size: 0.015
 # Miscellaneous configuration
 
 # If your calibration problem is not fully constrained you should anchored one of the sensors.

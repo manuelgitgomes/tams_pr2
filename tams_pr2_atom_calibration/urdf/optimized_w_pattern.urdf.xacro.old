@@ -910,7 +910,7 @@
     </plugin>
   </gazebo>
   <joint name="head_pan_joint" type="revolute">
-    <origin xyz="-0.01707 0.0 0.38145" rpy="0.0 0.0 -0.03897654545492374"/>
+    <origin xyz="-0.01707 0.0 0.38145" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 0.0 1.0"/>
     <parent link="torso_lift_link"/>
     <child link="head_pan_link"/>
@@ -948,7 +948,7 @@
     </joint>
   </transmission>
   <joint name="head_tilt_joint" type="revolute">
-    <origin xyz="0.068 0.0 0.0" rpy="0.0 -0.025225546349730715 0.0"/>
+    <origin xyz="0.068 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 1.0 0.0"/>
     <parent link="head_pan_link"/>
     <child link="head_tilt_link"/>
@@ -1534,7 +1534,7 @@
     </visual>
   </link>
   <joint name="azure_kinect_camera_base_to_rgb_sensor_joint" type="fixed">
-    <origin xyz="-0.07466568353559286 -0.03210135506543399 -0.012904341249372842" rpy="-0.0056235786454332665 0.005404129792773083 0.008111063480687923"/>
+    <origin xyz="-0.05676780065029393 -0.030427372516010083 0.0033222298391132775" rpy="0.018045571285833357 0.019225405975527306 -0.017201892935295456"/>
     <parent link="azure_kinect_camera_base"/>
     <child link="azure_kinect_rgb_sensor"/>
   </joint>
@@ -1551,7 +1551,7 @@
     <child link="azure_kinect_depth_camera_link"/>
   </joint>
   <joint name="azure_kinect_camera_base_joint" type="fixed">
-    <origin xyz="0.04797663865993433 -0.008366640694689446 0.14526051134446816" rpy="0.03532604804076814 -0.06496716953483635 -0.05511706101973044"/>
+    <origin xyz="0.09443919908378173 0.010873822309647299 0.1675598749914739" rpy="-0.011229592652682889 -0.036835859973993135 -0.011355891320667735"/>
     <parent link="head_plate_frame"/>
     <child link="azure_kinect_camera_base"/>
   </joint>
@@ -1754,7 +1754,7 @@
     </joint>
   </transmission>
   <joint name="r_shoulder_pan_joint" type="revolute">
-    <origin xyz="0.0 -0.188 0.0" rpy="0.0 0.0 -0.030585949105467303"/>
+    <origin xyz="0.0 -0.188 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 0.0 1.0"/>
     <parent link="torso_lift_link"/>
     <child link="r_shoulder_pan_link"/>
@@ -1784,7 +1784,7 @@
     </collision>
   </link>
   <joint name="r_shoulder_lift_joint" type="revolute">
-    <origin xyz="0.1 0.0 0.0" rpy="0.0 -0.02932552843059411 0.0"/>
+    <origin xyz="0.1 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 1.0 0.0"/>
     <parent link="r_shoulder_pan_link"/>
     <child link="r_shoulder_lift_link"/>
@@ -1814,7 +1814,7 @@
     </collision>
   </link>
   <joint name="r_upper_arm_roll_joint" type="revolute">
-    <origin xyz="0.0 0.0 0.0" rpy="-0.018258450538204244 0.0 0.0"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="1.0 0.0 0.0"/>
     <parent link="r_shoulder_lift_link"/>
     <child link="r_upper_arm_roll_link"/>
@@ -1922,7 +1922,7 @@
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
   <joint name="r_forearm_roll_joint" type="continuous">
-    <origin xyz="0.0 0.0 0.0" rpy="-0.1843833813901606 0.0 0.0"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="1.0 0.0 0.0"/>
     <parent link="r_elbow_flex_link"/>
     <child link="r_forearm_roll_link"/>
@@ -1968,7 +1968,7 @@
     </joint>
   </transmission>
   <joint name="r_elbow_flex_joint" type="revolute">
-    <origin xyz="0.4 0.0 0.0" rpy="0.0 0.002147718078060532 0.0"/>
+    <origin xyz="0.4 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 1.0 0.0"/>
     <parent link="r_upper_arm_link"/>
     <child link="r_elbow_flex_link"/>
@@ -2257,7 +2257,7 @@
     </collision>
   </link>
   <joint name="rh_FFJ4" type="revolute">
-    <origin xyz="0.033 0.0 0.095" rpy="0.0 0.14126182335454857 0.0"/>
+    <origin xyz="0.033 0.0 0.095" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 -1.0 0.0"/>
     <parent link="rh_palm"/>
     <child link="rh_ffknuckle"/>
@@ -3518,7 +3518,7 @@
     <turnGravityOff>True</turnGravityOff>
   </gazebo>
   <joint name="l_shoulder_pan_joint" type="revolute">
-    <origin xyz="0.0 0.188 0.0" rpy="0.0 0.0 -0.034817290760945765"/>
+    <origin xyz="0.0 0.188 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 0.0 1.0"/>
     <parent link="torso_lift_link"/>
     <child link="l_shoulder_pan_link"/>
@@ -3548,7 +3548,7 @@
     </collision>
   </link>
   <joint name="l_shoulder_lift_joint" type="revolute">
-    <origin xyz="0.1 0.0 0.0" rpy="0.0 -0.04593202341840259 0.0"/>
+    <origin xyz="0.1 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 1.0 0.0"/>
     <parent link="l_shoulder_pan_link"/>
     <child link="l_shoulder_lift_link"/>
@@ -3578,7 +3578,7 @@
     </collision>
   </link>
   <joint name="l_upper_arm_roll_joint" type="revolute">
-    <origin xyz="0.0 0.0 0.0" rpy="0.003819578775115014 0.0 0.0"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="1.0 0.0 0.0"/>
     <parent link="l_shoulder_lift_link"/>
     <child link="l_upper_arm_roll_link"/>
@@ -3686,7 +3686,7 @@
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
   <joint name="l_forearm_roll_joint" type="continuous">
-    <origin xyz="0.0 0.0 0.0" rpy="-0.027130027402837164 0.0 0.0"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="1.0 0.0 0.0"/>
     <parent link="l_elbow_flex_link"/>
     <child link="l_forearm_roll_link"/>
@@ -3732,7 +3732,7 @@
     </joint>
   </transmission>
   <joint name="l_elbow_flex_joint" type="revolute">
-    <origin xyz="0.4 0.0 0.0" rpy="0.0 -0.015841758965102523 0.0"/>
+    <origin xyz="0.4 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 1.0 0.0"/>
     <parent link="l_upper_arm_link"/>
     <child link="l_elbow_flex_link"/>
@@ -3803,7 +3803,7 @@
     </collision>
   </link>
   <joint name="l_wrist_flex_joint" type="revolute">
-    <origin xyz="0.321 0.0 0.0" rpy="0.0 0.024323899430578125 0.0"/>
+    <origin xyz="0.321 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 1.0 0.0"/>
     <parent link="l_forearm_link"/>
     <child link="l_wrist_flex_link"/>
@@ -3833,7 +3833,7 @@
     </collision>
   </link>
   <joint name="l_wrist_roll_joint" type="continuous">
-    <origin xyz="0.0 0.0 0.0" rpy="-0.10591448792615889 0.0 0.0"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="1.0 0.0 0.0"/>
     <parent link="l_wrist_flex_link"/>
     <child link="l_wrist_roll_link"/>
@@ -4454,4 +4454,32 @@
     <turnGravityOff>true</turnGravityOff>
     <material>PR2/Blue</material>
   </gazebo>
+  <link name="pattern_link">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <visual name="pattern_1_visual">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://atom_worlds/pattern/models/chessboard_200x214_5x4/chessboard_200x214_5x4.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="l_gripper_l_finger_tip_frame-pattern_link" type="fixed">
+    <origin xyz="0.16785105749370122 0.020799888532438377 -0.05563957214450821" rpy="-0.7236605485709088 -1.5674034359960725 2.321399499882478"/>
+    <parent link="l_gripper_l_finger_tip_frame"/>
+    <child link="pattern_link"/>
+  </joint>
+  <link name="pattern2_link">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <visual name="pattern_2_visual">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="package://atom_worlds/pattern/models/chessboard_200x214_5x4/chessboard_200x214_5x4.dae"/>
+      </geometry>
+    </visual>
+  </link>
+  <joint name="rh_forearm-pattern2_link" type="fixed">
+    <origin xyz="-0.045037293842251774 -0.08990692423298793 0.14333858144792916" rpy="-1.576794206213072 -0.005406545134788132 0.026852054441157805"/>
+    <parent link="rh_forearm"/>
+    <child link="pattern2_link"/>
+  </joint>
 </robot>

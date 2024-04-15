@@ -74,78 +74,11 @@ Visualization Manager:
     Value: true
   - Class: rviz/Image
     Enabled: true
-    Image Topic: /azure_kinect/depth/image_raw/labeled2d
-    Max Value: 1
-    Median window: 5
-    Min Value: 0
-    Name: azure_depth_camera-Labels-Image
-    Normalize Range: true
-    Queue Size: 2
-    Transport Hint: raw
-    Unreliable: false
-    Value: false
-  - Class: rviz/MarkerArray
-    Enabled: true
-    Marker Topic: /azure_kinect/depth/image_raw/labeled3d
-    Name: azure_depth_camera-Labels-3D
-    Namespaces: {}
-    Queue Size: 10
-    Value: true
-  - Class: rviz/Image
-    Enabled: true
     Image Topic: /azure_kinect/rgb/image_raw/labeled2d
     Max Value: 1
     Median window: 5
     Min Value: 0
     Name: azure_rgb_camera-Labels-Image
-    Normalize Range: true
-    Queue Size: 2
-    Transport Hint: raw
-    Unreliable: false
-    Value: false
-  - Class: rviz/Image
-    Enabled: true
-    Image Topic: /narrow_stereo/left/image_rect/labeled2d
-    Max Value: 1
-    Median window: 5
-    Min Value: 0
-    Name: narrow_left_camera-Labels-Image
-    Normalize Range: true
-    Queue Size: 2
-    Transport Hint: raw
-    Unreliable: false
-    Value: false
-  - Class: rviz/Image
-    Enabled: true
-    Image Topic: /narrow_stereo/right/image_rect/labeled2d
-    Max Value: 1
-    Median window: 5
-    Min Value: 0
-    Name: narrow_right_camera-Labels-Image
-    Normalize Range: true
-    Queue Size: 2
-    Transport Hint: raw
-    Unreliable: false
-    Value: false
-  - Class: rviz/Image
-    Enabled: true
-    Image Topic: /wide_stereo/left/image_rect/labeled2d
-    Max Value: 1
-    Median window: 5
-    Min Value: 0
-    Name: wide_left_camera-Labels-Image
-    Normalize Range: true
-    Queue Size: 2
-    Transport Hint: raw
-    Unreliable: false
-    Value: false
-  - Class: rviz/Image
-    Enabled: true
-    Image Topic: /wide_stereo/right/image_rect/labeled2d
-    Max Value: 1
-    Median window: 5
-    Min Value: 0
-    Name: wide_right_camera-Labels-Image
     Normalize Range: true
     Queue Size: 2
     Transport Hint: raw

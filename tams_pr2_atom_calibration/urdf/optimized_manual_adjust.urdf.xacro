@@ -910,14 +910,14 @@
     </plugin>
   </gazebo>
   <joint name="head_pan_joint" type="revolute">
-    <origin xyz="-0.01707 0.0 0.38145" rpy="0.0 0.0 -0.03897654545492374"/>
+    <origin xyz="-0.01707 0.0 0.38145" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 0.0 1.0"/>
     <parent link="torso_lift_link"/>
     <child link="head_pan_link"/>
     <limit effort="2.645" lower="-3.007" upper="3.007" velocity="6.0"/>
     <dynamics damping="0.5"/>
     <safety_controller k_velocity="1.5" k_position="100.0" soft_lower_limit="-2.857" soft_upper_limit="2.857"/>
-    <calibration rising="0.0521899521255305" falling="0"/>
+    <calibration rising="0.0303234" falling="0"/>
   </joint>
   <link name="head_pan_link">
     <inertial>
@@ -948,14 +948,14 @@
     </joint>
   </transmission>
   <joint name="head_tilt_joint" type="revolute">
-    <origin xyz="0.068 0.0 0.0" rpy="0.0 -0.025225546349730715 0.0"/>
+    <origin xyz="0.068 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 1.0 0.0"/>
     <parent link="head_pan_link"/>
     <child link="head_tilt_link"/>
     <limit effort="18.0" lower="-0.471238" upper="1.39626" velocity="5.0"/>
     <dynamics damping="10.0"/>
     <safety_controller k_velocity="3.0" k_position="100.0" soft_lower_limit="-0.3712" soft_upper_limit="1.29626"/>
-    <calibration rising="0" falling="0.05047299239962615"/>
+    <calibration rising="0" falling="0.0110223"/>
   </joint>
   <link name="head_tilt_link">
     <inertial>
@@ -1534,7 +1534,7 @@
     </visual>
   </link>
   <joint name="azure_kinect_camera_base_to_rgb_sensor_joint" type="fixed">
-    <origin xyz="-0.07466568353559286 -0.03210135506543399 -0.012904341249372842" rpy="-0.0056235786454332665 0.005404129792773083 0.008111063480687923"/>
+    <origin xyz="-0.01721323301495916 -0.02901985231172751 0.009946408323916658" rpy="-0.007722464822759145 -0.025976485755276633 -0.0070823237921861645"/>
     <parent link="azure_kinect_camera_base"/>
     <child link="azure_kinect_rgb_sensor"/>
   </joint>
@@ -1551,7 +1551,7 @@
     <child link="azure_kinect_depth_camera_link"/>
   </joint>
   <joint name="azure_kinect_camera_base_joint" type="fixed">
-    <origin xyz="0.04797663865993433 -0.008366640694689446 0.14526051134446816" rpy="0.03532604804076814 -0.06496716953483635 -0.05511706101973044"/>
+    <origin xyz="0.048 0.0 0.171" rpy="0.0 0.0 0.0"/>
     <parent link="head_plate_frame"/>
     <child link="azure_kinect_camera_base"/>
   </joint>
@@ -1583,12 +1583,60 @@
   <material name="pixel_6_pro_white">
     <color rgba="0.9 0.9 0.9 1.0"/>
   </material>
-  <link name="pixel_6_pro"/>
-  <link name="pixel_6_pro/camera_bar"/>
-  <link name="pixel_6_pro/main_camera"/>
-  <link name="pixel_6_pro/ultra_wide_camera"/>
-  <link name="pixel_6_pro/tele_camera"/>
-  <link name="pixel_6_pro/flash_led"/>
+  <link name="pixel_6_pro">
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 1.5707963267948966 3.141592653589793"/>
+      <geometry>
+        <mesh filename="package://tams_pr2_description/meshes/pixel_6_pro.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="pixel_6_pro_white"/>
+    </visual>
+  </link>
+  <link name="pixel_6_pro/camera_bar">
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.003 0.022 0.071"/>
+      </geometry>
+      <material name="pixel_6_pro_black"/>
+    </visual>
+  </link>
+  <link name="pixel_6_pro/main_camera">
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.0016" length="0.0005"/>
+      </geometry>
+      <material name="pixel_6_pro_grey"/>
+    </visual>
+  </link>
+  <link name="pixel_6_pro/ultra_wide_camera">
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.0012" length="0.0005"/>
+      </geometry>
+      <material name="pixel_6_pro_grey"/>
+    </visual>
+  </link>
+  <link name="pixel_6_pro/tele_camera">
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.004 0.0055 0.0005"/>
+      </geometry>
+      <material name="pixel_6_pro_grey"/>
+    </visual>
+  </link>
+  <link name="pixel_6_pro/flash_led">
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.00165" length="0.0005"/>
+      </geometry>
+      <material name="pixel_6_pro_white"/>
+    </visual>
+  </link>
   <joint name="pixel_6_pro/camera_bar_joint" type="fixed">
     <origin xyz="0.00595 -0.0534 0.0" rpy="0.0 0.0 0.0"/>
     <parent link="pixel_6_pro"/>
@@ -1619,7 +1667,17 @@
     <parent link="head_plate_frame"/>
     <child link="pixel_6_pro"/>
   </joint>
-  <link name="pixel_6_pro_holder"/>
+  <link name="pixel_6_pro_holder">
+    <visual>
+      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 1.571"/>
+      <geometry>
+        <mesh filename="package://tams_pr2_description/meshes/pr2_pixel_6_pro_holder_v3.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="pixel_6_pro_holder_material_white">
+        <color rgba="0.95 0.95 0.95 1.0"/>
+      </material>
+    </visual>
+  </link>
   <joint name="pixel_6_pro_holder_joint" type="fixed">
     <origin xyz="-0.0635 0.0 0.0505" rpy="0.0 0.0 0.0"/>
     <parent link="head_plate_frame"/>
@@ -1754,14 +1812,14 @@
     </joint>
   </transmission>
   <joint name="r_shoulder_pan_joint" type="revolute">
-    <origin xyz="0.0 -0.188 0.0" rpy="0.0 0.0 -0.030585949105467303"/>
+    <origin xyz="0.0 -0.188 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 0.0 1.0"/>
     <parent link="torso_lift_link"/>
     <child link="r_shoulder_pan_link"/>
     <limit effort="30.0" lower="-2.2853981633974483" upper="0.7146018366025517" velocity="2.088"/>
     <dynamics damping="10.0"/>
     <safety_controller k_velocity="10.0" k_position="100.0" soft_lower_limit="-2.1353981633974484" soft_upper_limit="0.5646018366025517"/>
-    <calibration rising="-0.77025497063339" falling="0"/>
+    <calibration rising="-0.74550427" falling="0"/>
   </joint>
   <link name="r_shoulder_pan_link">
     <inertial>
@@ -1784,14 +1842,14 @@
     </collision>
   </link>
   <joint name="r_shoulder_lift_joint" type="revolute">
-    <origin xyz="0.1 0.0 0.0" rpy="0.0 -0.02932552843059411 0.0"/>
+    <origin xyz="0.1 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 1.0 0.0"/>
     <parent link="r_shoulder_pan_link"/>
     <child link="r_shoulder_lift_link"/>
     <limit effort="30.0" lower="-0.5236" upper="1.3963" velocity="2.082"/>
     <dynamics damping="10.0"/>
     <safety_controller k_velocity="10.0" k_position="100.0" soft_lower_limit="-0.3535999999999999" soft_upper_limit="1.2963"/>
-    <calibration rising="0" falling="0.017560181253305468"/>
+    <calibration rising="0" falling="0.02804656"/>
   </joint>
   <link name="r_shoulder_lift_link">
     <inertial>
@@ -1814,14 +1872,14 @@
     </collision>
   </link>
   <joint name="r_upper_arm_roll_joint" type="revolute">
-    <origin xyz="0.0 0.0 0.0" rpy="-0.018258450538204244 0.0 0.0"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="1.0 0.0 0.0"/>
     <parent link="r_shoulder_lift_link"/>
     <child link="r_upper_arm_roll_link"/>
     <limit effort="30.0" lower="-3.9000000000000004" upper="0.8" velocity="3.27"/>
     <dynamics damping="0.1"/>
     <safety_controller k_velocity="2.0" k_position="100.0" soft_lower_limit="-3.7500000000000004" soft_upper_limit="0.65"/>
-    <calibration rising="-1.5713770108738667" falling="0"/>
+    <calibration rising="-1.5587278" falling="0"/>
   </joint>
   <link name="r_upper_arm_roll_link">
     <inertial>
@@ -1922,14 +1980,14 @@
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
   <joint name="r_forearm_roll_joint" type="continuous">
-    <origin xyz="0.0 0.0 0.0" rpy="-0.1843833813901606 0.0 0.0"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="1.0 0.0 0.0"/>
     <parent link="r_elbow_flex_link"/>
     <child link="r_forearm_roll_link"/>
     <limit effort="30.0" lower="0" upper="0" velocity="3.5999999999999996"/>
     <dynamics damping="0.1"/>
     <safety_controller k_velocity="1.0" k_position="0" soft_lower_limit="0" soft_upper_limit="0"/>
-    <calibration rising="-0.06624517283358188" falling="0"/>
+    <calibration rising="0.0015972" falling="0"/>
   </joint>
   <link name="r_forearm_roll_link">
     <inertial>
@@ -1968,14 +2026,14 @@
     </joint>
   </transmission>
   <joint name="r_elbow_flex_joint" type="revolute">
-    <origin xyz="0.4 0.0 0.0" rpy="0.0 0.002147718078060532 0.0"/>
+    <origin xyz="0.4 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 1.0 0.0"/>
     <parent link="r_upper_arm_link"/>
     <child link="r_elbow_flex_link"/>
     <limit effort="30.0" lower="-2.3213" upper="0.0" velocity="3.3"/>
     <dynamics damping="1.0"/>
     <safety_controller k_velocity="3.0" k_position="100.0" soft_lower_limit="-2.1212999999999997" soft_upper_limit="-0.15"/>
-    <calibration rising="0" falling="-1.1863535155814202"/>
+    <calibration rising="0" falling="-1.15635323"/>
   </joint>
   <link name="r_elbow_flex_link">
     <inertial>
@@ -2257,7 +2315,7 @@
     </collision>
   </link>
   <joint name="rh_FFJ4" type="revolute">
-    <origin xyz="0.033 0.0 0.095" rpy="0.0 0.14126182335454857 0.0"/>
+    <origin xyz="0.033 0.0 0.095" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 -1.0 0.0"/>
     <parent link="rh_palm"/>
     <child link="rh_ffknuckle"/>
@@ -3518,14 +3576,14 @@
     <turnGravityOff>True</turnGravityOff>
   </gazebo>
   <joint name="l_shoulder_pan_joint" type="revolute">
-    <origin xyz="0.0 0.188 0.0" rpy="0.0 0.0 -0.034817290760945765"/>
+    <origin xyz="0.0 0.188 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 0.0 1.0"/>
     <parent link="torso_lift_link"/>
     <child link="l_shoulder_pan_link"/>
     <limit effort="30.0" lower="-0.7146018366025517" upper="2.2853981633974483" velocity="2.088"/>
     <dynamics damping="10.0"/>
     <safety_controller k_velocity="10.0" k_position="100.0" soft_lower_limit="-0.5646018366025517" soft_upper_limit="2.1353981633974484"/>
-    <calibration rising="0.7934907719137071" falling="0"/>
+    <calibration rising="0.82833099" falling="0"/>
   </joint>
   <link name="l_shoulder_pan_link">
     <inertial>
@@ -3548,14 +3606,14 @@
     </collision>
   </link>
   <joint name="l_shoulder_lift_joint" type="revolute">
-    <origin xyz="0.1 0.0 0.0" rpy="0.0 -0.04593202341840259 0.0"/>
+    <origin xyz="0.1 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 1.0 0.0"/>
     <parent link="l_shoulder_pan_link"/>
     <child link="l_shoulder_lift_link"/>
     <limit effort="30.0" lower="-0.5236" upper="1.3963" velocity="2.082"/>
     <dynamics damping="10.0"/>
     <safety_controller k_velocity="10.0" k_position="100.0" soft_lower_limit="-0.3535999999999999" soft_upper_limit="1.2963"/>
-    <calibration rising="0" falling="-0.01176747185215518"/>
+    <calibration rising="0" falling="-0.00788445"/>
   </joint>
   <link name="l_shoulder_lift_link">
     <inertial>
@@ -3578,14 +3636,14 @@
     </collision>
   </link>
   <joint name="l_upper_arm_roll_joint" type="revolute">
-    <origin xyz="0.0 0.0 0.0" rpy="0.003819578775115014 0.0 0.0"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="1.0 0.0 0.0"/>
     <parent link="l_shoulder_lift_link"/>
     <child link="l_upper_arm_roll_link"/>
     <limit effort="30.0" lower="-0.8" upper="3.9000000000000004" velocity="3.27"/>
     <dynamics damping="0.1"/>
     <safety_controller k_velocity="2.0" k_position="100.0" soft_lower_limit="-0.65" soft_upper_limit="3.7500000000000004"/>
-    <calibration rising="1.599455120499763" falling="0"/>
+    <calibration rising="1.5890453" falling="0"/>
   </joint>
   <link name="l_upper_arm_roll_link">
     <inertial>
@@ -3686,14 +3744,14 @@
     <turnGravityOff>true</turnGravityOff>
   </gazebo>
   <joint name="l_forearm_roll_joint" type="continuous">
-    <origin xyz="0.0 0.0 0.0" rpy="-0.027130027402837164 0.0 0.0"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="1.0 0.0 0.0"/>
     <parent link="l_elbow_flex_link"/>
     <child link="l_forearm_roll_link"/>
     <limit effort="30.0" lower="0" upper="0" velocity="3.5999999999999996"/>
     <dynamics damping="0.1"/>
     <safety_controller k_velocity="1.0" k_position="0" soft_lower_limit="0" soft_upper_limit="0"/>
-    <calibration rising="0.013565124033188975" falling="0"/>
+    <calibration rising="0.012567" falling="0"/>
   </joint>
   <link name="l_forearm_roll_link">
     <inertial>
@@ -3732,14 +3790,14 @@
     </joint>
   </transmission>
   <joint name="l_elbow_flex_joint" type="revolute">
-    <origin xyz="0.4 0.0 0.0" rpy="0.0 -0.015841758965102523 0.0"/>
+    <origin xyz="0.4 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 1.0 0.0"/>
     <parent link="l_upper_arm_link"/>
     <child link="l_elbow_flex_link"/>
     <limit effort="30.0" lower="-2.3213" upper="0.0" velocity="3.3"/>
     <dynamics damping="1.0"/>
     <safety_controller k_velocity="3.0" k_position="100.0" soft_lower_limit="-2.1212999999999997" soft_upper_limit="-0.15"/>
-    <calibration rising="0" falling="-1.3373751451068947"/>
+    <calibration rising="0" falling="-1.3022338"/>  
   </joint>
   <link name="l_elbow_flex_link">
     <inertial>
@@ -3803,14 +3861,14 @@
     </collision>
   </link>
   <joint name="l_wrist_flex_joint" type="revolute">
-    <origin xyz="0.321 0.0 0.0" rpy="0.0 0.024323899430578125 0.0"/>
+    <origin xyz="0.321 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="0.0 1.0 0.0"/>
     <parent link="l_forearm_link"/>
     <child link="l_wrist_flex_link"/>
     <limit effort="10.0" lower="-2.18" upper="0.0" velocity="3.078"/>
     <dynamics damping="0.1"/>
     <safety_controller k_velocity="4.0" k_position="20.0" soft_lower_limit="-2.0" soft_upper_limit="-0.1"/>
-    <calibration rising="0" falling="-0.5082108976740723"/>
+    <calibration rising="0" falling="-0.5241985"/>
   </joint>
   <link name="l_wrist_flex_link">
     <inertial>
@@ -3833,14 +3891,14 @@
     </collision>
   </link>
   <joint name="l_wrist_roll_joint" type="continuous">
-    <origin xyz="0.0 0.0 0.0" rpy="-0.10591448792615889 0.0 0.0"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0"/>
     <axis xyz="1.0 0.0 0.0"/>
     <parent link="l_wrist_flex_link"/>
     <child link="l_wrist_roll_link"/>
     <limit effort="10.0" lower="0" upper="0" velocity="3.5999999999999996"/>
     <dynamics damping="0.1"/>
     <safety_controller k_velocity="2.0" k_position="0" soft_lower_limit="0" soft_upper_limit="0"/>
-    <calibration rising="-1.5244533256025736" falling="0"/>
+    <calibration rising="-1.43863392" falling="0"/>
   </joint>
   <link name="l_wrist_roll_link">
     <inertial>
@@ -4370,34 +4428,6 @@
       <mechanicalReduction>1.0</mechanicalReduction>
     </actuator>
   </transmission>
-  <joint name="touch_probe_cylinder_base_joint" type="fixed">
-    <origin xyz="0.019 0.0 0.0" rpy="0.0 0.0 0.0"/>
-    <parent link="l_gripper_tool_frame"/>
-    <child link="touch_probe_cylinder_base_frame"/>
-  </joint>
-  <link name="touch_probe_cylinder_base_frame"/>
-  <joint name="touch_probe_cylinder_top_joint" type="fixed">
-    <origin xyz="0.02099 0.0 0.0" rpy="0.0 0.0 0.0"/>
-    <parent link="touch_probe_cylinder_base_frame"/>
-    <child link="touch_probe_cylinder_top_frame"/>
-  </joint>
-  <link name="touch_probe_cylinder_top_frame">
-    <visual>
-      <origin xyz="-0.010495 0.0 0.0" rpy="0.0 -1.5707963267948966 0.0"/>
-      <geometry>
-        <cylinder radius="0.002" length="0.02099"/>
-      </geometry>
-      <material name="Grey">
-        <color rgba="0.5 0.5 0.5 1.0"/>
-      </material>
-    </visual>
-    <collision>
-      <origin xyz="-0.010495 0.0 0.0" rpy="0.0 -1.5707963267948966 0.0"/>
-      <geometry>
-        <cylinder radius="0.002" length="0.02099"/>
-      </geometry>
-    </collision>
-  </link>
   <joint name="l_forearm_cam_frame_joint" type="fixed">
     <origin xyz="0.135 0.0 0.044" rpy="-1.5707963267948966 -0.5628686837681712 0.0"/>
     <parent link="l_forearm_roll_link"/>

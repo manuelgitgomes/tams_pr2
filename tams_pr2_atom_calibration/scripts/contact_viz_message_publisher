@@ -1,0 +1,229 @@
+#!/usr/bin/env python3
+
+import argparse
+import cv2
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import rospy
+from cv_bridge import CvBridge
+from geometry_msgs.msg import PoseStamped
+from tams_biotac.msg import ContactArray
+from sr_robot_msgs.msg import BiotacAll
+from pr2_msgs.msg import PressureState
+from sensor_msgs.msg import Image
+
+
+def trim_list(lst, x):
+    if len(lst) > x:
+        return lst[len(lst)-x:]
+    else:
+        return lst
+
+# Class to handle the contact message publishing
+class ContactVizMessagePublisher:
+    def __init__(self, hand, contact_threshold=5000):
+        # Define state variables
+        self.hand = hand
+        self.msg = None
+        self.msg_list = []
+        self.cv_bridge = CvBridge()
+        self.contact_threshold = contact_threshold
+        self.old_msg = None
+
+        # If the specified hand is 'right', subscribe to the corresponding topic
+        self.viz_dict = {'timestamps': [], 'values': [], 'indexes': []}
+        if self.hand == 'right':
+            self.viz_subscriber = rospy.Subscriber('/hand/rh/tactile_normalized', BiotacAll, self.viz_callback)
+            self.contact_viz_topic = '/atom/right_contact_viz'
+        elif self.hand == 'left':
+            self.viz_subscriber = rospy.Subscriber('/pressure/l_gripper_motor', PressureState, self.viz_callback)
+            self.contact_viz_topic = '/atom/left_contact_viz'
+        else:
+            raise ValueError(f'No hand named {self.hand}')
+
+        # Define the contact topic and create a publisher
+        self.viz_publisher = rospy.Publisher(self.contact_viz_topic, Image, queue_size=10)
+
+        # Print the topics being listened to and published
+    
+    def viz_callback(self, msg):
+        self.msg = msg
+
+    
+    def compute_left_viz(self):
+        msg = self.msg
+        if not msg:
+            return
+        if not self.old_msg:
+            self.old_msg = msg
+            return
+
+        timestamp_diff = (msg.header.stamp - self.old_msg.header.stamp).to_sec()
+        if round(timestamp_diff, 1) == 0:
+            return
+
+        max_el_list = 2000
+
+        for side in ['l_finger_tip', 'r_finger_tip']:
+            side_msg = np.array(getattr(msg, side))
+            old_side_msg = np.array(getattr(self.old_msg, side))
+            diff_msg = np.subtract(side_msg, old_side_msg)
+            derivatives = diff_msg / timestamp_diff
+
+            for index, pressure_sensor in enumerate(derivatives):
+                self.viz_dict['timestamps'].append(msg.header.stamp.to_sec())
+                self.viz_dict['timestamps'] = trim_list(self.viz_dict['timestamps'], max_el_list)
+                self.viz_dict['values'].append(pressure_sensor)
+                self.viz_dict['values'] = trim_list(self.viz_dict['values'], max_el_list)
+                self.viz_dict['indexes'].append(f'{side}_{index}')
+                self.viz_dict['indexes'] = trim_list(self.viz_dict['indexes'], max_el_list)
+
+        # Create dataframe
+        df = pd.DataFrame(self.viz_dict)
+        plt.clf()
+        ax = sns.lineplot(data=df, x='timestamps', y='values', hue='indexes')
+        fig = ax.get_figure()
+
+        # Configure plot
+        ax.set(xticklabels=[])
+        ax.set_ylim([-5000, 5000])
+        ax.set(xlabel='Time', ylabel='Differentiated Pressure Sensor Values', title=f'Differentiated Pressure Sensor Values over Time for Contact Detection')
+        ax.get_legend().remove()
+
+        # # Add contact threshold
+        ax.axhline(y=500, color='r', linestyle='-')
+
+        # redraw the canvas
+        fig.canvas.draw()
+        img_plot = np.array(fig.canvas.renderer.buffer_rgba())
+        cv_img = cv2.cvtColor(img_plot, cv2.COLOR_RGBA2BGR)
+        image_message = self.cv_bridge.cv2_to_imgmsg(cv_img, 'bgr8')
+        self.viz_publisher.publish(image_message)
+        self.old_msg = msg
+
+    def compute_right_viz(self):
+        msg = self.msg
+        if not msg:
+            return
+        max_el_list = 100
+        for index in range(0, len(msg.tactiles)):
+            if index != 0:
+                continue
+            self.viz_dict['timestamps'].append(msg.header.stamp.to_sec())
+            self.viz_dict['timestamps'] = trim_list(self.viz_dict['timestamps'], max_el_list)
+            self.viz_dict['values'].append(msg.tactiles[index].pdc)
+            self.viz_dict['values'] = trim_list(self.viz_dict['values'], max_el_list)
+            self.viz_dict['indexes'].append(index)
+            self.viz_dict['indexes'] = trim_list(self.viz_dict['indexes'], max_el_list)
+        # Create dataframe
+        df = pd.DataFrame(self.viz_dict)
+        plt.clf()
+        ax = sns.lineplot(data=df, x='timestamps', y='values')
+        fig = ax.get_figure()
+
+        # Configure plot
+        ax.set(xticklabels=[])
+        ax.set_ylim([-10, 100])
+        ax.set(xlabel='Time', ylabel='PDC Value', title=f'PDC Value over Time for Contact Detection')
+
+        # Add contact threshold
+        ax.axhline(y=10, color='r', linestyle='-')
+
+        # redraw the canvas
+        fig.canvas.draw()
+        img_plot = np.array(fig.canvas.renderer.buffer_rgba())
+        cv_img = cv2.cvtColor(img_plot, cv2.COLOR_RGBA2BGR)
+        image_message = self.cv_bridge.cv2_to_imgmsg(cv_img, 'bgr8')
+        self.viz_publisher.publish(image_message)
+
+    # def pressure_sensor_callback(self, msg):
+    #     # Append the received message to the message list
+    #     self.msg_list.append(msg)
+
+    #     # Remove older messages based on the time threshold
+    #     while len(self.msg_list) > 1 and \
+    #         msg.header.stamp - self.msg_list[0].header.stamp > self.time_threshold:
+    #         self.msg_list.pop(0)
+
+    #     # If there are not enough messages, return
+    #     if len(self.msg_list) < 2:
+    #         return
+
+    #     # Store the previous contact detection status
+    #     self.prev_contact_detected = self.contact_detected
+
+    #     # Detect contact based on the current and previous messages
+    #     self.detect_contact()
+
+    #     # If contact is detected and it was not detected in the previous iteration, publish a contact message
+    #     if self.contact_detected and not self.prev_contact_detected:
+    #         contact_message = self.convert_pressure_msg_to_contact_msg(msg)
+    #         print('Contact detected!')
+    #         self.publisher.publish(contact_message)
+
+    # def convert_pressure_msg_to_contact_msg(self, msg):
+    #     # Extract information from the received message and create a new PoseStamped message
+    #     contact_message = PoseStamped()
+    #     contact_message.header.stamp = msg.header.stamp
+    #     contact_message.header.frame_id = 'touch_probe_cylinder_top_frame'
+    #     return contact_message
+
+    # def from_msg_list_to_pressure_and_time_arrays(self):
+    #     # Initialize lists to store pressure values and corresponding times
+    #     pressure_lists = [[], []]
+    #     time_list = []
+
+    #     # Extract pressure and time information from messages in the message list
+    #     for msg in self.msg_list:
+    #         pressure_lists[0].append(np.array((msg.l_finger_tip)))
+    #         pressure_lists[1].append(np.array((msg.r_finger_tip)))
+    #         time_list.append(msg.header.stamp.to_sec())
+
+    #     # Convert lists to NumPy arrays
+    #     pressure_arrays = np.array([np.array(pressure_list) for pressure_list in pressure_lists])
+    #     time_array = np.array(time_list)
+    #     return pressure_arrays, time_array
+
+    # def detect_contact(self):
+    #     # Retrieve pressure and time arrays from the message list
+    #     pressure_arrays, time_array = self.from_msg_list_to_pressure_and_time_arrays()
+
+    #     # Calculate derivatives
+    #     pressure_diffs = np.diff(pressure_arrays, axis=1)
+    #     time_diffs = np.diff(time_array)
+    #     derivatives = pressure_diffs / time_diffs[:, np.newaxis]
+
+    #     # Check if any element in the derivative matrix exceeds the contact threshold
+    #     if not self.contact_detected:
+    #         self.contact_detected = np.any(derivatives > self.contact_threshold)
+    #     elif self.contact_detected:
+    #         self.contact_detected = not np.all(derivatives < self.contact_threshold)
+
+# Main function to handle command line arguments and start the node
+def main():
+    # Parse command line arguments
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-ha", "--hand", help="Which hand to detect contact from [right]", type=str, required=True)
+    args = vars(ap.parse_known_args()[0])
+
+    # Initialize ROS node
+    rospy.init_node(f'contact_viz_message_publisher_{args["hand"]}')
+
+    # Create an instance of ContactMessagePublisher
+    contact_viz_message_publisher = ContactVizMessagePublisher(args['hand'])
+
+    # Wait for callbacks
+    while not rospy.is_shutdown():
+        if args['hand'] == 'right':
+            contact_viz_message_publisher.compute_right_viz()
+        elif args['hand'] == 'left':
+            contact_viz_message_publisher.compute_left_viz()
+        else:
+            raise ValueError(f'No hand named {args["hand"]}')
+
+
+if __name__ == '__main__':
+    main()
+

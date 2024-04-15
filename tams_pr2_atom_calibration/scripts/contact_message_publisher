@@ -10,7 +10,7 @@ from pr2_msgs.msg import PressureState
 
 # Class to handle the contact message publishing
 class ContactMessagePublisher:
-    def __init__(self, hand, timestamp_threshold=2.0, time_threshold=2, contact_threshold=5000):
+    def __init__(self, hand, timestamp_threshold=0.3, time_threshold=2, contact_threshold=5000):
         # Define state variables
         self.hand = hand
         self.contact_detected = False
