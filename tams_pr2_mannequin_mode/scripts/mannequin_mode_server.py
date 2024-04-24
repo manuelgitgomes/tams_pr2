@@ -3,7 +3,7 @@
 from tams_pr2_look.srv import SetTarget
 from pr2_mechanism_msgs.srv import *
 from std_srvs.srv import *
-from std_msgs.msg import Bool
+from std_msgs.msg import Bool, String as StringMsg
 from geometry_msgs.msg import PointStamped
 import rospy
 
@@ -56,9 +56,10 @@ def toggle_service(req):
 
     state_publisher.publish(run)
     if run:
-        message = 'mannequin mode active'
+        message = 'mannequin mode is active'
     else:
-        message = 'mannequin mode inactive'
+        message = 'disabled mannequin mode'
+    say_publisher.publish(message)
     return SetBoolResponse(True, message)
 
 if __name__ == "__main__":
@@ -69,6 +70,7 @@ if __name__ == "__main__":
 
     state_publisher = rospy.Publisher('mannequin_mode_active', Bool, latch= True, queue_size= 1)
     state_publisher.publish(False)
+    say_publisher = rospy.Publisher('/say', StringMsg, queue_size= 1)
 
     s = rospy.Service('set_mannequin_mode', SetBool, toggle_service)
 
