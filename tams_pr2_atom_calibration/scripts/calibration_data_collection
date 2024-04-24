@@ -1,0 +1,81 @@
+#!/usr/bin/env python3
+
+import os
+import argparse
+import rospy
+import rospkg
+from std_msgs.msg import Header
+from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint 
+import yaml
+
+
+def main():
+    # ---------------------------------------
+    # --- Read command line arguments
+    # ---------------------------------------
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-en", "--experience_name", help="Name of config that defines the poses.", type=str,
+                    required=True)
+    args = vars(ap.parse_known_args()[0])
+
+    rospy.init_node('calibration_data_collection')
+
+    print('Loading experience')
+    rospack = rospkg.RosPack()
+    tams_pr2_atom_calibration_path = rospack.get_path('tams_pr2_atom_calibration')
+    experience_directory = tams_pr2_atom_calibration_path + '/config/' + args['experience_name']
+
+    # Loading experience config
+    with open(experience_directory + '/config.yaml', 'r') as file:
+        config = yaml.safe_load(file)
+
+    # Loading positions
+    position_list = []
+    for _, _, filenames in os.walk(experience_directory):
+        for filename in filenames:
+            if filename == 'config.yaml':
+                continue
+            with open(f'{experience_directory}/{filename}', 'r') as file:
+                position_list.append(yaml.safe_load(file))
+
+    
+    # Setting up publishers
+    publishers_dict = {}
+    for command in position_list[0]['joint_commands']:
+        publishers_dict[command['controller']] = rospy.Publisher(f'/{command["controller"]}/command',\
+             JointTrajectory, queue_size=10)
+    
+    print(f'Loaded experience {config["name"]}')
+
+    # ---------------------------------------
+    print(config['prompt'])
+    input('Press Enter when ready to start')
+    # ---------------------------------------
+
+    for idx, position in enumerate(position_list):
+        for command in position['joint_commands']:
+            joint_trajectory_point = JointTrajectoryPoint()
+            joint_trajectory_point.positions = command['segments'][0]['positions']
+            joint_trajectory_point.velocities = [0.0] * len(command['segments'][0]['positions'])
+            joint_trajectory_point.accelerations = [0.0] * len(command['segments'][0]['positions'])
+            joint_trajectory_point.effort = [0.0] * len(command['segments'][0]['positions'])
+            joint_trajectory_point.time_from_start = rospy.Duration.from_sec(command['segments'][0]['duration'])
+
+            header = Header()
+            header.stamp = rospy.Time.now()
+            header.seq = idx
+
+            joint_trajectory = JointTrajectory()
+            joint_trajectory.joint_names = config['joint_names'][command['controller']]
+            joint_trajectory.points = [joint_trajectory_point]
+            joint_trajectory.header = header
+
+            publishers_dict[command['controller']].publish(joint_trajectory)
+
+        input('Press Enter to move to next pose')
+
+
+
+
+if __name__ == '__main__':
+    main()

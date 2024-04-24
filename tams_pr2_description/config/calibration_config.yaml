@@ -1,38 +1,22 @@
-###############################################
-# PR2 calibration values
-###############################################
-
-## right arm (excluding Shadow Hand)
-r_shoulder_pan_calib_ref: -0.74550427
-r_shoulder_lift_calib_ref: 0.02804656
-r_upper_arm_roll_calib_ref: -1.5587278
-r_elbow_flex_calib_ref: -1.15635323
-r_forearm_roll_calib_ref: 0.0015972
-
-## left arm
-l_shoulder_pan_calib_ref: 0.82713499
-l_shoulder_lift_calib_ref: 0.029331549999999998
-l_upper_arm_roll_calib_ref: 1.6001292999999999
-l_elbow_flex_calib_ref: -1.3127588
-l_forearm_roll_calib_ref: 0.063877
-l_wrist_flex_calib_ref: -0.5442714999999999
-l_wrist_roll_calib_ref: -1.49252392
-
-## head joints
-head_pan_calib_ref: 0.0303234
-head_tilt_calib_ref: 0.0110223
-
-## laser
+r_shoulder_pan_calib_ref: -0.7822212494469558
+r_shoulder_lift_calib_ref: -0.017482093213967292
+r_upper_arm_roll_calib_ref: -1.579354599859862
+r_elbow_flex_calib_ref: -1.191608254466996
+r_forearm_roll_calib_ref: -0.3700407441149797
+l_shoulder_pan_calib_ref: 0.7671079246635226
+l_shoulder_lift_calib_ref: -0.04741590639865244
+l_upper_arm_roll_calib_ref: 1.5962142727581
+l_elbow_flex_calib_ref: -1.3495261427428842
+l_forearm_roll_calib_ref: -0.038268699710708134
+l_wrist_flex_calib_ref: -0.48845281533517987
+l_wrist_roll_calib_ref: -1.5094257408838878
+head_pan_calib_ref: 0.02402160719639246
+head_tilt_calib_ref: 0.05420369088535659
 laser_calib_ref: 0.0
-
-## torso joints
 torso_calib_ref: 0.00475
-
-## azure offset
-azure_kinect_camera_base_pos_x: 0.0
-azure_kinect_camera_base_pos_y: 0.0
-azure_kinect_camera_base_pos_z: 0.0
-
-azure_kinect_camera_base_rot_r: 0.0
-azure_kinect_camera_base_rot_p: 0.0
-azure_kinect_camera_base_rot_y: 0.0
+azure_kinect_camera_base_pos_x: 0.03811318009325462
+azure_kinect_camera_base_pos_y: 0.0008485397570519547
+azure_kinect_camera_base_pos_z: -0.03670317700479904
+azure_kinect_camera_base_rot_r: 0.019976574801555902
+azure_kinect_camera_base_rot_p: -0.0757064882361213
+azure_kinect_camera_base_rot_y: -0.05551544913407346
